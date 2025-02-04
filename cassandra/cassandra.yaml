@@ -1,0 +1,21 @@
+cluster_name: 'mysimbdp-cluster'
+data_file_directories:
+  - '/var/lib/cassandra/data'
+commitlog_directory: '/var/lib/cassandra/commitlog'
+saved_caches_directory: '/var/lib/cassandra/saved_caches'
+
+# Network settings
+listen_address: '0.0.0.0'
+rpc_address: '0.0.0.0'
+seed_provider:
+  - class_name: 'org.apache.cassandra.locator.SimpleSeedProvider'
+    parameters:
+      - seeds: '127.0.0.1'
+
+# Replication strategy for your use case
+endpoint_snitch: 'SimpleSnitch'
+
+# Concurrency tuning
+concurrent_reads: 32
+concurrent_writes: 32
+write_request_timeout_in_ms: 2000
