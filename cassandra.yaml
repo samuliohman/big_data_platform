@@ -4,18 +4,17 @@ data_file_directories:
 commitlog_directory: '/var/lib/cassandra/commitlog'
 saved_caches_directory: '/var/lib/cassandra/saved_caches'
 
-# Network settings
 listen_address: '0.0.0.0'
 rpc_address: '0.0.0.0'
+
 seed_provider:
   - class_name: 'org.apache.cassandra.locator.SimpleSeedProvider'
     parameters:
-      - seeds: '127.0.0.1'
+      - seeds: 'nordics-node-ip, asia-node-ip'
 
-# Replication strategy for your use case
-endpoint_snitch: 'SimpleSnitch'
+endpoint_snitch: 'GossipingPropertyFileSnitch'
 
-# Concurrency tuning
-concurrent_reads: 32
-concurrent_writes: 32
+# Replication strategy configuration will be set at the keyspace level
+concurrent_reads: 64
+concurrent_writes: 64
 write_request_timeout_in_ms: 2000
