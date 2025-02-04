@@ -14,7 +14,7 @@ resource "google_compute_firewall" "cassandra-firewall" {
 
   allow {
     protocol = "tcp"
-    ports    = ["9042", "22"]  #  port 22 for SSH
+    ports    = ["7000", "7002", "9042", "22"]  #  port 22 for SSH
   }
 
   source_ranges = ["0.0.0.0/0"]
@@ -36,18 +36,44 @@ resource "google_compute_instance" "nordics_node" {
     access_config {}
   }
 
-  metadata_startup_script = <<-EOT
-    #!/bin/bash
-    sudo apt update
-    sudo apt install -y cassandra
-    echo "Cassandra installed on nordics node"
-  EOT
+  metadata_startup_script = <<-EOF
+#!/bin/bash
+
+# Update the system
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+# Install OpenJDK as a prerequisite
+sudo apt-get install openjdk-11-jdk -y
+
+# Create the keyrings directory if it doesn't exist
+sudo mkdir -p /etc/apt/keyrings
+
+# Download the Apache Cassandra GPG key and store it securely
+curl -o /etc/apt/keyrings/apache-cassandra.asc https://downloads.apache.org/cassandra/KEYS
+
+# Add the Cassandra repository for the 4.1 series
+echo "deb [signed-by=/etc/apt/keyrings/apache-cassandra.asc] https://debian.cassandra.apache.org 41x main" | sudo tee /etc/apt/sources.list.d/cassandra.sources.list
+
+# Update the package list
+sudo apt-get update
+
+# Install Cassandra
+sudo apt-get install cassandra -y
+
+# Start Cassandra service
+sudo systemctl enable cassandra
+sudo systemctl start cassandra
+
+# Check the status of Cassandra
+nodetool status
+EOF
 }
 
-resource "google_compute_instance" "west_node" {
-  name         = "west-node"
+resource "google_compute_instance" "eu_west_node" {
+  name         = "eu-west-node"
   machine_type = "e2-standard-2"
-  zone         = "europe-west1-b"
+  zone         = "europe-west1-b"  # updated zone for Europe West
 
   boot_disk {
     initialize_params {
@@ -57,28 +83,42 @@ resource "google_compute_instance" "west_node" {
 
   network_interface {
     network    = google_compute_network.cassandra-network.name
-    subnetwork = google_compute_subnetwork.west_subnet.self_link
+    subnetwork = google_compute_subnetwork.west_subnet.id
     access_config {}
   }
 
-  provisioner "file" {
-    source      = "cassandra.yaml"  # Path to your local cassandra.yaml file
-    destination = "/etc/cassandra/cassandra.yaml"  # Destination on the VM
-    
-    connection {
-      type        = "ssh"
-      user        = "your-ssh-user"
-      private_key = file("~/.ssh/google_compute_engine")
-      host        = self.network_interface[0].access_config[0].nat_ip
-    }
-  }
+  metadata_startup_script = <<-EOF
+#!/bin/bash
 
-  metadata_startup_script = <<-EOT
-    #!/bin/bash
-    sudo apt update
-    sudo apt install -y cassandra
-    echo "Cassandra installed on west node"
-  EOT
+# Update the system
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
+# Install OpenJDK as a prerequisite
+sudo apt-get install openjdk-11-jdk -y
+
+# Create the keyrings directory if it doesn't exist
+sudo mkdir -p /etc/apt/keyrings
+
+# Download the Apache Cassandra GPG key and store it securely
+curl -o /etc/apt/keyrings/apache-cassandra.asc https://downloads.apache.org/cassandra/KEYS
+
+# Add the Cassandra repository for the 4.1 series
+echo "deb [signed-by=/etc/apt/keyrings/apache-cassandra.asc] https://debian.cassandra.apache.org 41x main" | sudo tee /etc/apt/sources.list.d/cassandra.sources.list
+
+# Update the package list
+sudo apt-get update
+
+# Install Cassandra
+sudo apt-get install cassandra -y
+
+# Start Cassandra service
+sudo systemctl enable cassandra
+sudo systemctl start cassandra
+
+# Check the status of Cassandra
+nodetool status
+EOF
 }
 
 resource "google_compute_subnetwork" "west_subnet" {
@@ -86,4 +126,14 @@ resource "google_compute_subnetwork" "west_subnet" {
   ip_cidr_range = "10.0.0.0/20"
   region        = "europe-west1"
   network       = google_compute_network.cassandra-network.self_link
+}
+
+data "google_compute_instance" "nordics_node_ip" {
+  name = google_compute_instance.nordics_node.name
+  zone = google_compute_instance.nordics_node.zone
+}
+
+data "google_compute_instance" "eu_west_node_ip" {
+  name = google_compute_instance.eu_west_node.name
+  zone = google_compute_instance.eu_west_node.zone
 }
