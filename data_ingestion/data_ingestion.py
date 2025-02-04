@@ -3,7 +3,7 @@ import json
 import logging
 
 # Configure logging
-logging.basicConfig(filename='../logs/ingestion_log.txt', level=logging.INFO)
+logging.basicConfig(filename='../ingestion_log.txt', level=logging.INFO)
 
 def connect_to_cassandra():
     """Connect to Cassandra and return the session."""
