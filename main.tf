@@ -61,12 +61,11 @@ sudo apt-get update
 # Install Cassandra
 sudo apt-get install cassandra -y
 
-# Start Cassandra service
+# Stop Cassandra until custom cassadra.yaml is in place
 sudo systemctl enable cassandra
-sudo systemctl start cassandra
-
-# Check the status of Cassandra
-nodetool status
+sudo systemctl stop cassandra
+sudo chown -R cassandra:cassandra /var/lib/cassandra
+sudo chown cassandra:cassandra /etc/cassandra/cassandra.yaml
 EOF
 }
 
@@ -83,7 +82,6 @@ resource "google_compute_instance" "eu_west_node" {
 
   network_interface {
     network    = google_compute_network.cassandra-network.name
-    subnetwork = google_compute_subnetwork.west_subnet.id
     access_config {}
   }
 
@@ -112,20 +110,12 @@ sudo apt-get update
 # Install Cassandra
 sudo apt-get install cassandra -y
 
-# Start Cassandra service
+# Stop Cassandra until custom cassadra.yaml is in place
 sudo systemctl enable cassandra
-sudo systemctl start cassandra
-
-# Check the status of Cassandra
-nodetool status
+sudo systemctl stop cassandra
+sudo chown -R cassandra:cassandra /var/lib/cassandra
+sudo chown cassandra:cassandra /etc/cassandra/cassandra.yaml
 EOF
-}
-
-resource "google_compute_subnetwork" "west_subnet" {
-  name          = "west-subnet"
-  ip_cidr_range = "10.0.0.0/20"
-  region        = "europe-west1"
-  network       = google_compute_network.cassandra-network.self_link
 }
 
 data "google_compute_instance" "nordics_node_ip" {

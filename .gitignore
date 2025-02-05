@@ -1,4 +1,4 @@
 #!/usr/bin/env wolframscript
-raw_data/nyu_2451_38660_las
+data_ingestion/raw_data/nyu_2451_38660_las
 .terraform*
 terraform.*

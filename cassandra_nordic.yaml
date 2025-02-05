@@ -4,10 +4,10 @@ data_file_directories:
 commitlog_directory: '/var/lib/cassandra/commitlog'
 saved_caches_directory: '/var/lib/cassandra/saved_caches'
 
-listen_address: 'CURRENT_NODE_IP'
-broadcast_address: 'CURRENT_NODE_IP'
-rpc_address: 'CURRENT_NODE_IP'
-broadcast_rpc_address: 'CURRENT_NODE_IP'
+listen_address: '10.166.0.3'
+broadcast_address: '10.166.0.3'
+rpc_address: '10.166.0.3'
+broadcast_rpc_address: '10.166.0.3'
 
 commitlog_sync: 'periodic'
 commitlog_sync_period_in_ms: 10000 
@@ -15,13 +15,13 @@ commitlog_sync_period_in_ms: 10000
 seed_provider:
   - class_name: 'org.apache.cassandra.locator.SimpleSeedProvider'
     parameters:
-      - seeds: 'NORDICS_NODE_IP, WEST_NODE_IP'
+      - seeds: '10.166.0.3, 10.132.0.3'
 
 endpoint_snitch: 'GossipingPropertyFileSnitch'
 
 # Replication strategy configuration will be set at the keyspace level
-concurrent_reads: 128
-concurrent_writes: 128
+concurrent_reads: 64
+concurrent_writes: 64
 write_request_timeout_in_ms: 2000
 
 partitioner: 'org.apache.cassandra.dht.Murmur3Partitioner'
