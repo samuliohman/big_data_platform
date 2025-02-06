@@ -14,7 +14,14 @@ resource "google_compute_firewall" "cassandra-firewall" {
 
   allow {
     protocol = "tcp"
-    ports    = ["7000", "7002", "9042", "22"]  #  port 22 for SSH
+    ports    = [
+      "7000",  # Intra-node communication (Gossip)
+      "7001",  # SSL intra-node communication (if enabled)
+      "7199",  # JMX
+      "9042",  # CQL client communication
+      "22",    # SSH access
+      "9160"   # Cassandra Thrift
+    ]
   }
 
   source_ranges = ["0.0.0.0/0"]

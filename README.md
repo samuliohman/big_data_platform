@@ -1,20 +1,28 @@
-Commands to run on a google SDK CLI (local powershell instance):
+Initialize and Authenticate with Google Cloud SDK
+Run these commands to set up and authenticate your Google Cloud environment:
 ```
 gcloud init
+gcloud auth login
 gcloud auth application-default login
+gcloud services enable compute.googleapis.com
 ```
 
+
+Deploy Infrastructure Using Terraform
+Use Terraform to initialize, apply, and configure the Cassandra cluster. Wait a few minutes for the nodes to be running before running the configuration script:
 ```
 terraform init
 terraform apply
 
-# Configure cassandra using powershell script
+# Configure cassandra using powershell script. Nodes need to be running before the script so wait a few minutes.
 .\configure_cassandra.ps1
 
 terraform destroy
 ```
 
-When cassandra VMs are properly running, here are the commands for data ingestion.
+
+Ingest Data into Cassandra
+Once the Cassandra VMs are running, use these commands to ingest data:
 ```
 cd data_ingestion
 py -m pip install -r requirements.txt
@@ -27,8 +35,8 @@ py data_ingestion.py --nodes "$NORDICS_EXT_IP" "$WEST_EXT_IP"
 ```
 
 
-
-Additional helper scripts for debugging:
+Debugging Commands
+Use these commands to debug and monitor the status of your Cassandra nodes:
 ```
 gcloud compute instances list
 

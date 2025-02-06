@@ -1,0 +1,660 @@
+2025-02-05 20:34:45,100 - ERROR - Script failed: contact_points should not be a string, it should be a sequence (e.g. list) of strings
+2025-02-05 20:35:11,629 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '35.228.54.151:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-05 20:35:11,630 - INFO - New Cassandra host <Host: 10.132.0.2:9042 dc1> discovered
+2025-02-05 20:35:32,812 - WARNING - Failed to create connection pool for new host 10.132.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:35:32,817 - WARNING - Host 10.132.0.2:9042 has been marked down
+2025-02-05 20:35:32,817 - INFO - Connected to Cassandra cluster at ['35.228.54.151', '34.140.124.27']
+2025-02-05 20:35:33,247 - INFO - Schema created successfully
+2025-02-05 20:35:54,941 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 1.7 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:36:17,668 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 4.2 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:36:42,996 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 7.44 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:37:00,435 - INFO - Processed 10000 measurements
+2025-02-05 20:37:11,508 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 16.8 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:37:49,432 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 28.48 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:38:22,993 - INFO - Processed 20000 measurements
+2025-02-05 20:38:38,969 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 72.32 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:39:44,896 - INFO - Processed 30000 measurements
+2025-02-05 20:40:12,369 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 110.08 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:41:06,944 - INFO - Processed 40000 measurements
+2025-02-05 20:42:23,536 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 261.12 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:42:24,178 - INFO - Processed 50000 measurements
+2025-02-05 20:43:42,606 - INFO - Processed 60000 measurements
+2025-02-05 20:45:07,215 - INFO - Processed 70000 measurements
+2025-02-05 20:46:27,961 - INFO - Processed 80000 measurements
+2025-02-05 20:47:05,802 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 522.24 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-05 20:47:47,521 - INFO - Processed 90000 measurements
+2025-02-06 12:52:18,841 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.88.206.210:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 12:52:18,841 - INFO - New Cassandra host <Host: 10.132.0.2:9042 dc1> discovered
+2025-02-06 12:52:40,059 - WARNING - Failed to create connection pool for new host 10.132.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 12:52:40,080 - WARNING - Host 10.132.0.2:9042 has been marked down
+2025-02-06 12:59:43,440 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.88.206.210:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 12:59:43,440 - INFO - New Cassandra host <Host: 10.132.0.2:9042 dc1> discovered
+2025-02-06 13:00:04,631 - WARNING - Failed to create connection pool for new host 10.132.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:00:04,634 - WARNING - Host 10.132.0.2:9042 has been marked down
+2025-02-06 13:00:04,635 - INFO - Connected to Cassandra cluster at ['34.88.206.210', '34.38.191.215']
+2025-02-06 13:00:05,285 - INFO - Schema created successfully
+2025-02-06 13:00:27,114 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 2.26 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:21:27,394 - ERROR - Script failed: __init__() got an unexpected keyword argument 'ignore_peer_addresses'
+2025-02-06 13:22:27,948 - ERROR - Script failed: __init__() got an unexpected keyword argument 'ignore_peer_addresses'
+2025-02-06 13:27:18,396 - ERROR - Script failed: __init__() got an unexpected keyword argument 'child_policy'
+2025-02-06 13:28:09,373 - ERROR - Script failed: Clusters constructed with execution_profiles should not specify legacy parameters load_balancing_policy or default_retry_policy. Configure this in a profile instead.
+2025-02-06 13:29:25,977 - ERROR - Script failed: name 'WhiteListRoundRobinPolicy' is not defined
+2025-02-06 13:30:17,011 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.88.206.210:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 13:30:17,012 - INFO - New Cassandra host <Host: 10.132.0.2:9042 dc1> discovered
+2025-02-06 13:30:17,012 - INFO - Cassandra host 34.38.191.215:9042 removed
+2025-02-06 13:30:18,205 - INFO - Connected to Cassandra cluster at ['34.88.206.210', '34.38.191.215']
+2025-02-06 13:30:18,245 - INFO - Schema created successfully
+2025-02-06 13:30:38,158 - WARNING - Failed to create connection pool for new host 10.132.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:30:38,164 - WARNING - Host 10.132.0.2:9042 has been marked down
+2025-02-06 13:31:00,281 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 2.08 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:33:47,360 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.38.191.215:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 13:33:47,361 - INFO - New Cassandra host <Host: 10.166.0.2:9042 dc1> discovered
+2025-02-06 13:33:47,361 - INFO - Cassandra host 34.88.206.210:9042 removed
+2025-02-06 13:33:48,347 - INFO - Connected to Cassandra cluster at ['34.88.206.210', '34.38.191.215']
+2025-02-06 13:33:48,513 - INFO - Schema created successfully
+2025-02-06 13:34:08,655 - WARNING - Failed to create connection pool for new host 10.166.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:34:08,659 - WARNING - Host 10.166.0.2:9042 has been marked down
+2025-02-06 13:34:30,787 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 1.0 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:34:52,898 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 1.0 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:35:15,023 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 1.0 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:35:37,144 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 1.0 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:35:53,900 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.88.206.210:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 13:35:53,901 - INFO - New Cassandra host <Host: 10.132.0.2:9042 dc1> discovered
+2025-02-06 13:36:15,031 - WARNING - Failed to create connection pool for new host 10.132.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:36:15,034 - WARNING - Host 10.132.0.2:9042 has been marked down
+2025-02-06 13:36:15,035 - INFO - Connected to Cassandra cluster at ['34.88.206.210', '34.38.191.215']
+2025-02-06 13:36:15,085 - INFO - Schema created successfully
+2025-02-06 13:36:34,385 - INFO - Processed 2000 measurements
+2025-02-06 13:36:37,199 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 1.94 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:36:49,750 - INFO - Processed 4000 measurements
+2025-02-06 13:37:00,268 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 3.84 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:37:05,264 - INFO - Processed 6000 measurements
+2025-02-06 13:37:21,177 - INFO - Processed 8000 measurements
+2025-02-06 13:37:25,239 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 7.84 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:37:37,525 - INFO - Processed 10000 measurements
+2025-02-06 13:37:52,851 - INFO - Processed 12000 measurements
+2025-02-06 13:37:54,180 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 15.04 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:38:08,468 - INFO - Processed 14000 measurements
+2025-02-06 13:38:24,396 - INFO - Processed 16000 measurements
+2025-02-06 13:38:30,344 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 34.88 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:38:40,173 - INFO - Processed 18000 measurements
+2025-02-06 13:38:56,096 - INFO - Processed 20000 measurements
+2025-02-06 13:39:11,509 - INFO - Processed 22000 measurements
+2025-02-06 13:39:26,324 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 72.32 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:39:26,847 - INFO - Processed 24000 measurements
+2025-02-06 13:39:42,563 - INFO - Processed 26000 measurements
+2025-02-06 13:39:58,306 - INFO - Processed 28000 measurements
+2025-02-06 13:40:14,305 - INFO - Processed 30000 measurements
+2025-02-06 13:40:30,523 - INFO - Processed 32000 measurements
+2025-02-06 13:40:46,273 - INFO - Processed 34000 measurements
+2025-02-06 13:40:59,743 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 139.52 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:41:01,816 - INFO - Processed 36000 measurements
+2025-02-06 13:41:17,055 - INFO - Processed 38000 measurements
+2025-02-06 13:47:01,428 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.88.206.210:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 13:47:01,429 - INFO - New Cassandra host <Host: 10.132.0.2:9042 dc1> discovered
+2025-02-06 13:47:22,555 - WARNING - Failed to create connection pool for new host 10.132.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:47:22,560 - WARNING - Host 10.132.0.2:9042 has been marked down
+2025-02-06 13:47:22,561 - INFO - Connected to Cassandra cluster at ['34.88.206.210', '34.38.191.215']
+2025-02-06 13:47:22,945 - INFO - Schema created successfully
+2025-02-06 13:47:44,798 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 2.04 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:47:54,299 - INFO - Processed 2000 measurements
+2025-02-06 13:48:07,976 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 3.68 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:48:09,638 - INFO - Processed 4000 measurements
+2025-02-06 13:48:25,089 - INFO - Processed 6000 measurements
+2025-02-06 13:48:32,752 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 7.92 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:48:40,465 - INFO - Processed 8000 measurements
+2025-02-06 13:48:55,818 - INFO - Processed 10000 measurements
+2025-02-06 13:49:01,770 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 16.16 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:49:11,602 - INFO - Processed 12000 measurements
+2025-02-06 13:49:26,974 - INFO - Processed 14000 measurements
+2025-02-06 13:49:39,023 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 30.08 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:49:42,349 - INFO - Processed 16000 measurements
+2025-02-06 13:49:57,607 - INFO - Processed 18000 measurements
+2025-02-06 13:50:13,730 - INFO - Processed 20000 measurements
+2025-02-06 13:50:29,201 - INFO - Processed 22000 measurements
+2025-02-06 13:50:30,181 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 56.32 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:50:44,694 - INFO - Processed 24000 measurements
+2025-02-06 13:51:00,114 - INFO - Processed 26000 measurements
+2025-02-06 13:51:15,796 - INFO - Processed 28000 measurements
+2025-02-06 13:51:31,487 - INFO - Processed 30000 measurements
+2025-02-06 13:51:46,903 - INFO - Processed 32000 measurements
+2025-02-06 13:51:47,613 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 134.4 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:52:02,616 - INFO - Processed 34000 measurements
+2025-02-06 13:52:17,980 - INFO - Processed 36000 measurements
+2025-02-06 13:52:33,472 - INFO - Processed 38000 measurements
+2025-02-06 13:52:49,043 - INFO - Processed 40000 measurements
+2025-02-06 13:53:05,468 - INFO - Processed 42000 measurements
+2025-02-06 13:53:21,636 - INFO - Processed 44000 measurements
+2025-02-06 13:53:37,864 - INFO - Processed 46000 measurements
+2025-02-06 13:53:53,874 - INFO - Processed 48000 measurements
+2025-02-06 13:54:10,174 - INFO - Processed 50000 measurements
+2025-02-06 13:54:23,073 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 225.28 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:54:25,972 - INFO - Processed 52000 measurements
+2025-02-06 13:54:41,678 - INFO - Processed 54000 measurements
+2025-02-06 13:54:57,455 - INFO - Processed 56000 measurements
+2025-02-06 13:55:13,552 - INFO - Processed 58000 measurements
+2025-02-06 13:55:29,467 - INFO - Processed 60000 measurements
+2025-02-06 13:55:45,138 - INFO - Processed 62000 measurements
+2025-02-06 13:56:01,083 - INFO - Processed 64000 measurements
+2025-02-06 13:56:16,859 - INFO - Processed 66000 measurements
+2025-02-06 13:56:32,428 - INFO - Processed 68000 measurements
+2025-02-06 13:56:47,751 - INFO - Processed 70000 measurements
+2025-02-06 13:57:03,076 - INFO - Processed 72000 measurements
+2025-02-06 13:57:18,659 - INFO - Processed 74000 measurements
+2025-02-06 13:57:34,220 - INFO - Processed 76000 measurements
+2025-02-06 13:57:49,516 - INFO - Processed 78000 measurements
+2025-02-06 13:58:04,907 - INFO - Processed 80000 measurements
+2025-02-06 13:58:20,246 - INFO - Processed 82000 measurements
+2025-02-06 13:58:29,433 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 455.68 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 13:58:35,647 - INFO - Processed 84000 measurements
+2025-02-06 13:58:51,304 - INFO - Processed 86000 measurements
+2025-02-06 13:59:08,074 - INFO - Processed 88000 measurements
+2025-02-06 13:59:23,597 - INFO - Processed 90000 measurements
+2025-02-06 13:59:39,197 - INFO - Processed 92000 measurements
+2025-02-06 13:59:54,748 - INFO - Processed 94000 measurements
+2025-02-06 14:00:11,632 - INFO - Processed 96000 measurements
+2025-02-06 14:00:27,708 - INFO - Processed 98000 measurements
+2025-02-06 14:00:43,814 - INFO - Processed 100000 measurements
+2025-02-06 14:01:03,048 - INFO - Processed 102000 measurements
+2025-02-06 14:01:18,714 - INFO - Processed 104000 measurements
+2025-02-06 14:01:37,936 - INFO - Processed 106000 measurements
+2025-02-06 14:01:54,317 - INFO - Processed 108000 measurements
+2025-02-06 14:02:09,929 - INFO - Processed 110000 measurements
+2025-02-06 14:02:25,604 - INFO - Processed 112000 measurements
+2025-02-06 14:02:41,249 - INFO - Processed 114000 measurements
+2025-02-06 14:02:57,146 - INFO - Processed 116000 measurements
+2025-02-06 14:03:13,887 - INFO - Processed 118000 measurements
+2025-02-06 14:03:30,829 - INFO - Processed 120000 measurements
+2025-02-06 14:03:46,789 - INFO - Processed 122000 measurements
+2025-02-06 14:04:02,397 - INFO - Processed 124000 measurements
+2025-02-06 14:04:18,867 - INFO - Processed 126000 measurements
+2025-02-06 14:04:38,356 - INFO - Processed 128000 measurements
+2025-02-06 14:04:54,732 - INFO - Processed 130000 measurements
+2025-02-06 14:05:11,583 - INFO - Processed 132000 measurements
+2025-02-06 14:05:28,064 - INFO - Processed 134000 measurements
+2025-02-06 14:05:43,466 - INFO - Processed 136000 measurements
+2025-02-06 14:05:59,074 - INFO - Processed 138000 measurements
+2025-02-06 14:06:15,767 - INFO - Processed 140000 measurements
+2025-02-06 14:06:26,167 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 558.0 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:06:31,251 - INFO - Processed 142000 measurements
+2025-02-06 14:06:46,964 - INFO - Processed 144000 measurements
+2025-02-06 14:07:03,645 - INFO - Processed 146000 measurements
+2025-02-06 14:07:19,613 - INFO - Processed 148000 measurements
+2025-02-06 14:07:36,497 - INFO - Processed 150000 measurements
+2025-02-06 14:07:52,295 - INFO - Processed 152000 measurements
+2025-02-06 14:08:08,400 - INFO - Processed 154000 measurements
+2025-02-06 14:08:27,504 - INFO - Processed 156000 measurements
+2025-02-06 14:08:46,364 - INFO - Processed 158000 measurements
+2025-02-06 14:09:02,410 - INFO - Processed 160000 measurements
+2025-02-06 14:09:18,341 - INFO - Processed 162000 measurements
+2025-02-06 14:09:33,737 - INFO - Processed 164000 measurements
+2025-02-06 14:09:49,538 - INFO - Processed 166000 measurements
+2025-02-06 14:10:05,288 - INFO - Processed 168000 measurements
+2025-02-06 14:10:22,387 - INFO - Processed 170000 measurements
+2025-02-06 14:10:37,907 - INFO - Processed 172000 measurements
+2025-02-06 14:10:54,093 - INFO - Processed 174000 measurements
+2025-02-06 14:11:09,862 - INFO - Processed 176000 measurements
+2025-02-06 14:11:25,159 - INFO - Processed 178000 measurements
+2025-02-06 14:11:40,460 - INFO - Processed 180000 measurements
+2025-02-06 14:11:56,101 - INFO - Processed 182000 measurements
+2025-02-06 14:12:11,734 - INFO - Processed 184000 measurements
+2025-02-06 14:12:27,058 - INFO - Processed 186000 measurements
+2025-02-06 14:12:42,512 - INFO - Processed 188000 measurements
+2025-02-06 14:12:58,433 - INFO - Processed 190000 measurements
+2025-02-06 14:13:14,259 - INFO - Processed 192000 measurements
+2025-02-06 14:13:29,634 - INFO - Processed 194000 measurements
+2025-02-06 14:13:45,130 - INFO - Processed 196000 measurements
+2025-02-06 14:13:49,583 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.38.191.215:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 14:13:49,583 - INFO - New Cassandra host <Host: 10.166.0.2:9042 dc1> discovered
+2025-02-06 14:13:50,552 - INFO - Connected to Cassandra cluster at ['34.88.206.210', '34.38.191.215']
+2025-02-06 14:13:50,718 - INFO - Schema created successfully
+2025-02-06 14:14:02,004 - INFO - Processed 198000 measurements
+2025-02-06 14:14:10,954 - WARNING - Failed to create connection pool for new host 10.166.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:14:11,067 - WARNING - Host 10.166.0.2:9042 has been marked down
+2025-02-06 14:14:18,769 - INFO - Processed 200000 measurements
+2025-02-06 14:14:33,310 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 1.84 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:14:34,693 - INFO - Processed 202000 measurements
+2025-02-06 14:14:50,263 - INFO - Processed 204000 measurements
+2025-02-06 14:15:06,363 - INFO - Processed 206000 measurements
+2025-02-06 14:15:22,251 - INFO - Processed 208000 measurements
+2025-02-06 14:15:22,596 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.38.191.215:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 14:15:22,596 - INFO - New Cassandra host <Host: 10.166.0.2:9042 dc1> discovered
+2025-02-06 14:15:37,965 - INFO - Processed 210000 measurements
+2025-02-06 14:15:43,854 - WARNING - Failed to create connection pool for new host 10.166.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:15:43,860 - WARNING - Host 10.166.0.2:9042 has been marked down
+2025-02-06 14:15:43,861 - INFO - Connected to Cassandra cluster at ['34.88.206.210', '34.38.191.215']
+2025-02-06 14:15:44,532 - INFO - Schema created successfully
+2025-02-06 14:15:54,275 - INFO - Processed 212000 measurements
+2025-02-06 14:16:05,223 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 522.0 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:16:06,329 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 2.24 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:16:10,229 - INFO - Processed 214000 measurements
+2025-02-06 14:16:25,699 - INFO - Processed 216000 measurements
+2025-02-06 14:16:29,699 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 3.88 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:16:35,243 - INFO - Processed 2000 measurements
+2025-02-06 14:16:40,980 - INFO - Processed 218000 measurements
+2025-02-06 14:16:54,683 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 8.0 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:16:56,347 - INFO - Processed 220000 measurements
+2025-02-06 14:17:11,651 - INFO - Processed 222000 measurements
+2025-02-06 14:17:20,986 - INFO - Processed 4000 measurements
+2025-02-06 14:17:23,820 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 18.4 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:17:26,965 - INFO - Processed 224000 measurements
+2025-02-06 14:17:42,453 - INFO - Processed 226000 measurements
+2025-02-06 14:17:58,290 - INFO - Processed 228000 measurements
+2025-02-06 14:18:03,333 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 30.72 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:18:07,328 - INFO - Processed 6000 measurements
+2025-02-06 14:18:13,870 - INFO - Processed 230000 measurements
+2025-02-06 14:18:30,336 - INFO - Processed 232000 measurements
+2025-02-06 14:18:46,184 - INFO - Processed 234000 measurements
+2025-02-06 14:18:54,019 - INFO - Processed 8000 measurements
+2025-02-06 14:18:55,169 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 65.92 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:19:02,076 - INFO - Processed 236000 measurements
+2025-02-06 14:19:18,165 - INFO - Processed 238000 measurements
+2025-02-06 14:19:33,526 - INFO - Processed 240000 measurements
+2025-02-06 14:19:40,858 - INFO - Processed 10000 measurements
+2025-02-06 14:19:48,982 - INFO - Processed 242000 measurements
+2025-02-06 14:20:04,770 - INFO - Processed 244000 measurements
+2025-02-06 14:20:21,227 - INFO - Processed 246000 measurements
+2025-02-06 14:20:22,207 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 111.36 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:20:28,152 - INFO - Processed 12000 measurements
+2025-02-06 14:20:37,702 - INFO - Processed 248000 measurements
+2025-02-06 14:20:53,876 - INFO - Processed 250000 measurements
+2025-02-06 14:21:09,967 - INFO - Processed 252000 measurements
+2025-02-06 14:21:14,790 - INFO - Processed 14000 measurements
+2025-02-06 14:21:25,942 - INFO - Processed 254000 measurements
+2025-02-06 14:21:41,992 - INFO - Processed 256000 measurements
+2025-02-06 14:21:58,292 - INFO - Processed 258000 measurements
+2025-02-06 14:22:01,554 - INFO - Processed 16000 measurements
+2025-02-06 14:22:14,181 - INFO - Processed 260000 measurements
+2025-02-06 14:22:29,734 - INFO - Processed 262000 measurements
+2025-02-06 14:22:34,703 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 281.6 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:22:47,926 - INFO - Processed 264000 measurements
+2025-02-06 14:22:49,422 - INFO - Processed 18000 measurements
+2025-02-06 14:23:04,208 - INFO - Processed 266000 measurements
+2025-02-06 14:23:19,831 - INFO - Processed 268000 measurements
+2025-02-06 14:23:35,899 - INFO - Processed 270000 measurements
+2025-02-06 14:23:36,265 - INFO - Processed 20000 measurements
+2025-02-06 14:23:52,480 - INFO - Processed 272000 measurements
+2025-02-06 14:24:08,527 - INFO - Processed 274000 measurements
+2025-02-06 14:24:23,356 - INFO - Processed 22000 measurements
+2025-02-06 14:24:24,711 - INFO - Processed 276000 measurements
+2025-02-06 14:24:41,091 - INFO - Processed 278000 measurements
+2025-02-06 14:24:57,851 - INFO - Processed 280000 measurements
+2025-02-06 14:25:08,338 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 600.0 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:25:10,540 - INFO - Processed 24000 measurements
+2025-02-06 14:25:13,760 - INFO - Processed 282000 measurements
+2025-02-06 14:25:30,381 - INFO - Processed 284000 measurements
+2025-02-06 14:25:47,078 - INFO - Processed 286000 measurements
+2025-02-06 14:25:58,343 - INFO - Processed 26000 measurements
+2025-02-06 14:26:03,844 - INFO - Processed 288000 measurements
+2025-02-06 14:26:19,943 - INFO - Processed 290000 measurements
+2025-02-06 14:26:35,365 - INFO - Processed 292000 measurements
+2025-02-06 14:26:44,687 - INFO - Processed 28000 measurements
+2025-02-06 14:26:50,820 - INFO - Processed 294000 measurements
+2025-02-06 14:27:06,215 - INFO - Processed 296000 measurements
+2025-02-06 14:27:21,568 - INFO - Processed 298000 measurements
+2025-02-06 14:27:30,857 - INFO - Processed 30000 measurements
+2025-02-06 14:27:37,238 - INFO - Processed 300000 measurements
+2025-02-06 14:27:37,386 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 552.96 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:27:52,561 - INFO - Processed 302000 measurements
+2025-02-06 14:28:08,198 - INFO - Processed 304000 measurements
+2025-02-06 14:28:16,869 - INFO - Processed 32000 measurements
+2025-02-06 14:28:23,697 - INFO - Processed 306000 measurements
+2025-02-06 14:28:39,141 - INFO - Processed 308000 measurements
+2025-02-06 14:28:54,458 - INFO - Processed 310000 measurements
+2025-02-06 14:29:02,663 - INFO - Processed 34000 measurements
+2025-02-06 14:29:09,870 - INFO - Processed 312000 measurements
+2025-02-06 14:29:25,220 - INFO - Processed 314000 measurements
+2025-02-06 14:29:40,849 - INFO - Processed 316000 measurements
+2025-02-06 14:29:48,676 - INFO - Processed 36000 measurements
+2025-02-06 14:29:56,206 - INFO - Processed 318000 measurements
+2025-02-06 14:30:11,762 - INFO - Processed 320000 measurements
+2025-02-06 14:30:27,316 - INFO - Processed 322000 measurements
+2025-02-06 14:30:34,596 - INFO - Processed 38000 measurements
+2025-02-06 14:30:43,168 - INFO - Processed 324000 measurements
+2025-02-06 14:30:59,240 - INFO - Processed 326000 measurements
+2025-02-06 14:31:14,751 - INFO - Processed 328000 measurements
+2025-02-06 14:31:21,353 - INFO - Processed 40000 measurements
+2025-02-06 14:31:30,103 - INFO - Processed 330000 measurements
+2025-02-06 14:31:45,412 - INFO - Processed 332000 measurements
+2025-02-06 14:32:01,381 - INFO - Processed 334000 measurements
+2025-02-06 14:32:07,389 - INFO - Processed 42000 measurements
+2025-02-06 14:32:17,131 - INFO - Processed 336000 measurements
+2025-02-06 14:32:32,905 - INFO - Processed 338000 measurements
+2025-02-06 14:32:48,227 - INFO - Processed 340000 measurements
+2025-02-06 14:32:53,599 - INFO - Processed 44000 measurements
+2025-02-06 14:33:03,773 - INFO - Processed 342000 measurements
+2025-02-06 14:33:19,406 - INFO - Processed 344000 measurements
+2025-02-06 14:33:34,987 - INFO - Processed 346000 measurements
+2025-02-06 14:33:39,802 - INFO - Processed 46000 measurements
+2025-02-06 14:33:50,861 - INFO - Processed 348000 measurements
+2025-02-06 14:34:06,534 - INFO - Processed 350000 measurements
+2025-02-06 14:34:21,898 - INFO - Processed 352000 measurements
+2025-02-06 14:34:25,885 - INFO - Processed 48000 measurements
+2025-02-06 14:34:40,236 - INFO - Processed 354000 measurements
+2025-02-06 14:34:56,338 - INFO - Processed 356000 measurements
+2025-02-06 14:35:12,032 - INFO - Processed 358000 measurements
+2025-02-06 14:35:15,375 - INFO - Processed 50000 measurements
+2025-02-06 14:35:28,385 - INFO - Processed 360000 measurements
+2025-02-06 14:35:29,457 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 582.0 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:35:44,061 - INFO - Processed 362000 measurements
+2025-02-06 14:36:00,475 - INFO - Processed 364000 measurements
+2025-02-06 14:36:02,922 - INFO - Processed 52000 measurements
+2025-02-06 14:36:16,088 - INFO - Processed 366000 measurements
+2025-02-06 14:36:31,855 - INFO - Processed 368000 measurements
+2025-02-06 14:36:47,239 - INFO - Processed 370000 measurements
+2025-02-06 14:36:49,188 - INFO - Processed 54000 measurements
+2025-02-06 14:37:03,409 - INFO - Processed 372000 measurements
+2025-02-06 14:37:11,410 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 600.0 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:37:19,232 - INFO - Processed 374000 measurements
+2025-02-06 14:37:34,957 - INFO - Processed 376000 measurements
+2025-02-06 14:37:35,899 - INFO - Processed 56000 measurements
+2025-02-06 14:37:51,537 - INFO - Processed 378000 measurements
+2025-02-06 14:38:07,103 - INFO - Processed 380000 measurements
+2025-02-06 14:38:22,416 - INFO - Processed 382000 measurements
+2025-02-06 14:38:23,070 - INFO - Processed 58000 measurements
+2025-02-06 14:38:37,834 - INFO - Processed 384000 measurements
+2025-02-06 14:38:53,144 - INFO - Processed 386000 measurements
+2025-02-06 14:39:08,568 - INFO - Processed 388000 measurements
+2025-02-06 14:39:08,856 - INFO - Processed 60000 measurements
+2025-02-06 14:39:24,039 - INFO - Processed 390000 measurements
+2025-02-06 14:39:39,491 - INFO - Processed 392000 measurements
+2025-02-06 14:39:55,016 - INFO - Processed 62000 measurements
+2025-02-06 14:39:55,138 - INFO - Processed 394000 measurements
+2025-02-06 14:40:10,520 - INFO - Processed 396000 measurements
+2025-02-06 14:40:26,088 - INFO - Processed 398000 measurements
+2025-02-06 14:40:41,063 - INFO - Processed 64000 measurements
+2025-02-06 14:40:41,383 - INFO - Processed 400000 measurements
+2025-02-06 14:40:56,832 - INFO - Processed 402000 measurements
+2025-02-06 14:41:12,190 - INFO - Processed 404000 measurements
+2025-02-06 14:41:27,563 - INFO - Processed 406000 measurements
+2025-02-06 14:41:27,731 - INFO - Processed 66000 measurements
+2025-02-06 14:41:42,920 - INFO - Processed 408000 measurements
+2025-02-06 14:42:01,486 - INFO - Processed 410000 measurements
+2025-02-06 14:42:16,498 - INFO - Processed 68000 measurements
+2025-02-06 14:42:16,790 - INFO - Processed 412000 measurements
+2025-02-06 14:42:32,518 - INFO - Processed 414000 measurements
+2025-02-06 14:42:48,001 - INFO - Processed 416000 measurements
+2025-02-06 14:43:02,406 - INFO - Processed 70000 measurements
+2025-02-06 14:43:03,354 - INFO - Processed 418000 measurements
+2025-02-06 14:43:18,732 - INFO - Processed 420000 measurements
+2025-02-06 14:43:34,510 - INFO - Processed 422000 measurements
+2025-02-06 14:43:52,076 - INFO - Processed 72000 measurements
+2025-02-06 14:43:53,531 - INFO - Processed 424000 measurements
+2025-02-06 14:43:59,947 - INFO - Using datacenter 'dc1' for DCAwareRoundRobinPolicy (via host '34.88.206.210:9042'); if incorrect, please specify a local_dc to the constructor, or limit contact points to local cluster nodes
+2025-02-06 14:43:59,948 - INFO - New Cassandra host <Host: 10.132.0.2:9042 dc1> discovered
+2025-02-06 14:44:01,075 - INFO - Connected to Cassandra cluster at ['34.88.206.210', '34.38.191.215']
+2025-02-06 14:44:03,351 - INFO - Schema created successfully
+2025-02-06 14:44:10,645 - INFO - Processed 426000 measurements
+2025-02-06 14:44:21,080 - WARNING - Failed to create connection pool for new host 10.132.0.2:9042:
+Traceback (most recent call last):
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 3234, in run_add_or_renew_pool
+    new_pool = HostConnection(host, distance, self)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\pool.py", line 406, in __init__
+    self._connection = session.cluster.connection_factory(host.endpoint, on_orphaned_stream_released=self.on_orphaned_stream_released)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\cluster.py", line 1670, in connection_factory
+    return self.connection_class.factory(endpoint, self.connect_timeout, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 846, in factory
+    conn = cls(endpoint, *args, **kwargs)
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\io\asyncorereactor.py", line 353, in __init__
+    self._connect_socket()
+  File "C:\Users\samul\AppData\Local\Programs\Python\Python39\lib\site-packages\cassandra\connection.py", line 951, in _connect_socket
+    raise socket.error(sockerr.errno, "Tried connecting to %s. Last error: %s" %
+TimeoutError: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:44:21,086 - WARNING - Host 10.132.0.2:9042 has been marked down
+2025-02-06 14:44:26,138 - INFO - Processed 428000 measurements
+2025-02-06 14:44:30,967 - INFO - Processed 2000 measurements
+2025-02-06 14:44:39,036 - INFO - Processed 74000 measurements
+2025-02-06 14:44:41,517 - INFO - Processed 430000 measurements
+2025-02-06 14:44:43,203 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 1.78 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:44:46,588 - INFO - Processed 4000 measurements
+2025-02-06 14:44:57,102 - INFO - Processed 432000 measurements
+2025-02-06 14:45:02,062 - INFO - Processed 6000 measurements
+2025-02-06 14:45:06,072 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 3.64 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:45:12,551 - INFO - Processed 434000 measurements
+2025-02-06 14:45:17,433 - INFO - Processed 8000 measurements
+2025-02-06 14:45:25,066 - INFO - Processed 76000 measurements
+2025-02-06 14:45:28,101 - INFO - Processed 436000 measurements
+2025-02-06 14:45:30,825 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 8.64 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:45:32,579 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 600.0 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:45:32,963 - INFO - Processed 10000 measurements
+2025-02-06 14:45:44,166 - INFO - Processed 438000 measurements
+2025-02-06 14:45:49,298 - INFO - Processed 12000 measurements
+2025-02-06 14:45:59,959 - INFO - Processed 440000 measurements
+2025-02-06 14:46:00,503 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 15.68 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:46:05,059 - INFO - Processed 14000 measurements
+2025-02-06 14:46:11,937 - INFO - Processed 78000 measurements
+2025-02-06 14:46:15,851 - INFO - Processed 442000 measurements
+2025-02-06 14:46:20,896 - INFO - Processed 16000 measurements
+2025-02-06 14:46:31,475 - INFO - Processed 444000 measurements
+2025-02-06 14:46:36,477 - INFO - Processed 18000 measurements
+2025-02-06 14:46:37,342 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 28.16 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:46:47,415 - INFO - Processed 446000 measurements
+2025-02-06 14:46:52,426 - INFO - Processed 20000 measurements
+2025-02-06 14:46:58,408 - INFO - Processed 80000 measurements
+2025-02-06 14:47:03,130 - INFO - Processed 448000 measurements
+2025-02-06 14:47:08,257 - INFO - Processed 22000 measurements
+2025-02-06 14:47:19,122 - INFO - Processed 450000 measurements
+2025-02-06 14:47:24,450 - INFO - Processed 24000 measurements
+2025-02-06 14:47:26,649 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 70.4 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:47:32,481 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 552.0 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:47:35,113 - INFO - Processed 452000 measurements
+2025-02-06 14:47:40,513 - INFO - Processed 26000 measurements
+2025-02-06 14:47:45,083 - INFO - Processed 82000 measurements
+2025-02-06 14:47:51,027 - INFO - Processed 454000 measurements
+2025-02-06 14:47:56,195 - INFO - Processed 28000 measurements
+2025-02-06 14:48:06,771 - INFO - Processed 456000 measurements
+2025-02-06 14:48:12,044 - INFO - Processed 30000 measurements
+2025-02-06 14:48:22,461 - INFO - Processed 458000 measurements
+2025-02-06 14:48:27,612 - INFO - Processed 32000 measurements
+2025-02-06 14:48:31,304 - INFO - Processed 84000 measurements
+2025-02-06 14:48:38,267 - INFO - Processed 460000 measurements
+2025-02-06 14:48:43,457 - INFO - Processed 34000 measurements
+2025-02-06 14:48:53,986 - INFO - Processed 462000 measurements
+2025-02-06 14:48:58,103 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 125.44 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:48:59,356 - INFO - Processed 36000 measurements
+2025-02-06 14:49:09,831 - INFO - Processed 464000 measurements
+2025-02-06 14:49:15,134 - INFO - Processed 38000 measurements
+2025-02-06 14:49:17,630 - INFO - Processed 86000 measurements
+2025-02-06 14:49:25,335 - INFO - Processed 466000 measurements
+2025-02-06 14:49:30,567 - INFO - Processed 40000 measurements
+2025-02-06 14:49:41,176 - INFO - Processed 468000 measurements
+2025-02-06 14:49:46,459 - INFO - Processed 42000 measurements
+2025-02-06 14:49:56,829 - INFO - Processed 470000 measurements
+2025-02-06 14:50:02,683 - INFO - Processed 44000 measurements
+2025-02-06 14:50:04,089 - INFO - Processed 88000 measurements
+2025-02-06 14:50:13,133 - INFO - Processed 472000 measurements
+2025-02-06 14:50:18,872 - INFO - Processed 46000 measurements
+2025-02-06 14:50:29,149 - INFO - Processed 474000 measurements
+2025-02-06 14:50:34,420 - INFO - Processed 48000 measurements
+2025-02-06 14:50:44,532 - INFO - Processed 476000 measurements
+2025-02-06 14:50:49,816 - INFO - Processed 50000 measurements
+2025-02-06 14:50:50,730 - INFO - Processed 90000 measurements
+2025-02-06 14:51:00,507 - INFO - Processed 478000 measurements
+2025-02-06 14:51:05,920 - INFO - Processed 52000 measurements
+2025-02-06 14:51:16,974 - INFO - Processed 480000 measurements
+2025-02-06 14:51:22,570 - INFO - Processed 54000 measurements
+2025-02-06 14:51:24,670 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 281.6 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:51:34,112 - INFO - Processed 482000 measurements
+2025-02-06 14:51:39,146 - INFO - Processed 92000 measurements
+2025-02-06 14:51:39,908 - INFO - Processed 56000 measurements
+2025-02-06 14:51:50,851 - INFO - Processed 484000 measurements
+2025-02-06 14:51:56,196 - INFO - Processed 58000 measurements
+2025-02-06 14:52:06,449 - INFO - Processed 486000 measurements
+2025-02-06 14:52:11,933 - INFO - Processed 60000 measurements
+2025-02-06 14:52:21,974 - INFO - Processed 488000 measurements
+2025-02-06 14:52:25,753 - INFO - Processed 94000 measurements
+2025-02-06 14:52:27,303 - INFO - Processed 62000 measurements
+2025-02-06 14:52:37,459 - INFO - Processed 490000 measurements
+2025-02-06 14:52:42,825 - INFO - Processed 64000 measurements
+2025-02-06 14:52:53,024 - INFO - Processed 492000 measurements
+2025-02-06 14:52:58,403 - INFO - Processed 66000 measurements
+2025-02-06 14:53:08,753 - INFO - Processed 494000 measurements
+2025-02-06 14:53:11,853 - INFO - Processed 96000 measurements
+2025-02-06 14:53:14,329 - INFO - Processed 68000 measurements
+2025-02-06 14:53:24,727 - INFO - Processed 496000 measurements
+2025-02-06 14:53:30,305 - INFO - Processed 70000 measurements
+2025-02-06 14:53:40,588 - INFO - Processed 498000 measurements
+2025-02-06 14:53:46,012 - INFO - Processed 72000 measurements
+2025-02-06 14:53:56,443 - INFO - Processed 500000 measurements
+2025-02-06 14:53:58,569 - INFO - Processed 98000 measurements
+2025-02-06 14:54:01,897 - INFO - Processed 74000 measurements
+2025-02-06 14:54:12,438 - INFO - Processed 502000 measurements
+2025-02-06 14:54:17,870 - INFO - Processed 76000 measurements
+2025-02-06 14:54:28,117 - INFO - Processed 504000 measurements
+2025-02-06 14:54:33,942 - INFO - Processed 78000 measurements
+2025-02-06 14:54:44,214 - INFO - Processed 506000 measurements
+2025-02-06 14:54:45,249 - INFO - Processed 100000 measurements
+2025-02-06 14:54:49,677 - INFO - Processed 80000 measurements
+2025-02-06 14:55:00,008 - INFO - Processed 508000 measurements
+2025-02-06 14:55:05,802 - INFO - Processed 82000 measurements
+2025-02-06 14:55:15,913 - INFO - Processed 510000 measurements
+2025-02-06 14:55:21,590 - INFO - Processed 84000 measurements
+2025-02-06 14:55:31,620 - INFO - Processed 512000 measurements
+2025-02-06 14:55:31,726 - INFO - Processed 102000 measurements
+2025-02-06 14:55:36,931 - INFO - Processed 86000 measurements
+2025-02-06 14:55:47,225 - INFO - Processed 514000 measurements
+2025-02-06 14:55:52,646 - INFO - Processed 88000 measurements
+2025-02-06 14:55:53,642 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 576.0 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:56:02,993 - INFO - Processed 516000 measurements
+2025-02-06 14:56:08,615 - INFO - Processed 90000 measurements
+2025-02-06 14:56:18,062 - INFO - Processed 104000 measurements
+2025-02-06 14:56:18,977 - INFO - Processed 518000 measurements
+2025-02-06 14:56:24,487 - INFO - Processed 92000 measurements
+2025-02-06 14:56:27,398 - WARNING - Error attempting to reconnect to 10.132.0.2:9042, scheduling retry in 481.28 seconds: [Errno 10060] Tried connecting to [('10.132.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:56:34,825 - INFO - Processed 520000 measurements
+2025-02-06 14:56:40,251 - INFO - Processed 94000 measurements
+2025-02-06 14:56:50,673 - INFO - Processed 522000 measurements
+2025-02-06 14:56:56,203 - INFO - Processed 96000 measurements
+2025-02-06 14:57:04,539 - INFO - Processed 106000 measurements
+2025-02-06 14:57:05,629 - WARNING - Error attempting to reconnect to 10.166.0.2:9042, scheduling retry in 600.0 seconds: [Errno 10060] Tried connecting to [('10.166.0.2', 9042)]. Last error: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+2025-02-06 14:57:06,350 - INFO - Processed 524000 measurements
+2025-02-06 14:57:12,360 - INFO - Processed 98000 measurements
+2025-02-06 14:57:22,842 - INFO - Processed 526000 measurements
+2025-02-06 14:57:28,158 - INFO - Processed 100000 measurements
+2025-02-06 14:57:38,589 - INFO - Processed 528000 measurements

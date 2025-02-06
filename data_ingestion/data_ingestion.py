@@ -34,13 +34,13 @@ def connect_to_cassandra(nodes):
     default_profile = ExecutionProfile(
         load_balancing_policy=DCAwareRoundRobinPolicy(local_dc='dc1'),
         retry_policy=RetryPolicy(),
-        consistency_level=ConsistencyLevel.ONE,
-        request_timeout=60,  # Move timeout here
+        consistency_level=ConsistencyLevel.TWO,
+        request_timeout=60,
         row_factory=dict_factory
     )
 
     cluster = Cluster(
-        seed_node,
+        [seed_node],
         port=9042,
         protocol_version=4,
         connect_timeout=30,
@@ -66,12 +66,12 @@ def create_schema(session):
     try:
         # Create keyspace
         session.execute("""
-            CREATE KEYSPACE IF NOT EXISTS well_data
+            CREATE KEYSPACE IF NOT EXISTS lidar_data
             WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 2}
         """)
         
         # Switch to keyspace
-        session.set_keyspace('well_data')
+        session.set_keyspace('lidar_data')
         
         # Create table for LAS data
         session.execute("""
@@ -79,8 +79,8 @@ def create_schema(session):
                 depth float,
                 measurement_type text,
                 value float,
-                well_id text,
-                PRIMARY KEY ((well_id), depth, measurement_type)
+                lidar_id text,
+                PRIMARY KEY ((lidar_id), depth, measurement_type)
             )
         """)
         logging.info("Schema created successfully")
@@ -92,7 +92,7 @@ def process_las_file(filepath, batch_size=1000):
     """Process LiDAR LAS file in batches."""
     try:
         las = laspy.read(filepath)
-        well_id = filepath.split('/')[-1].split('.')[0]
+        lidar_id = filepath.split('/')[-1].split('.')[0]
         
         # Get point cloud data
         points = np.stack([las.x, las.y, las.z], axis=0).transpose()
@@ -106,13 +106,13 @@ def process_las_file(filepath, batch_size=1000):
                     'depth': float(point[2]),  # z coordinate as depth
                     'measurement_type': 'x',    # store x coordinate
                     'value': float(point[0]),
-                    'well_id': well_id
+                    'lidar_id': lidar_id
                 })
                 batch.append({
                     'depth': float(point[2]),  # z coordinate as depth
                     'measurement_type': 'y',    # store y coordinate
                     'value': float(point[1]),
-                    'well_id': well_id
+                    'lidar_id': lidar_id
                 })
                 
                 if len(batch) >= batch_size:
@@ -127,16 +127,16 @@ def process_las_file(filepath, batch_size=1000):
         logging.error(f"Failed to process LAS file: {str(e)}")
         raise
 
-def ingest_data(session, filepath, batch_size=5000):
+def ingest_data(session, filepath, batch_size=1000):
     """Ingest LAS data into Cassandra in batches."""
     try:
         print(f"Starting data ingestion from {filepath}")  # Add debug print
         # Prepare batch statement
         batch_statement = """
             BEGIN BATCH
-            INSERT INTO well_data.las_data (depth, measurement_type, value, well_id)
+            INSERT INTO lidar_data.las_data (depth, measurement_type, value, lidar_id)
             VALUES (?, ?, ?, ?)
-            INSERT INTO well_data.las_data (depth, measurement_type, value, well_id)
+            INSERT INTO lidar_data.las_data (depth, measurement_type, value, lidar_id)
             VALUES (?, ?, ?, ?)
             APPLY BATCH
         """
@@ -154,8 +154,8 @@ def ingest_data(session, filepath, batch_size=5000):
                 
                 # Execute batch insert for x,y pair
                 session.execute(insert_prepared, 
-                    (point_x['depth'], point_x['measurement_type'], point_x['value'], point_x['well_id'],
-                     point_y['depth'], point_y['measurement_type'], point_y['value'], point_y['well_id'])
+                    (point_x['depth'], point_x['measurement_type'], point_x['value'], point_x['lidar_id'],
+                     point_y['depth'], point_y['measurement_type'], point_y['value'], point_y['lidar_id'])
                 )
                 
             total_processed += len(batch)
