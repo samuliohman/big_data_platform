@@ -1,3 +1,5 @@
+# Instruction on how to replicate the big data platform creation
+
 Initialize and Authenticate with Google Cloud SDK
 Run these commands to set up and authenticate your Google Cloud environment:
 ```
