@@ -1,6 +1,7 @@
 ## Detailed project documentation is found in the file Project_document.pdf
 
 ### Here are instructions on how to replicate the big data platform creation
+Notice the dataset (*.las files) have to be manually downloaded from https://archive.nyu.edu/handle/2451/38660 as they do not fit in the .zip
 
 Initialize and Authenticate with Google Cloud SDK
 Run these commands to set up and authenticate your Google Cloud environment:
