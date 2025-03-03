@@ -177,7 +177,7 @@ if __name__ == "__main__":
         create_schema(session)
         
         # Ingest data
-        filepath = "./raw_data/nyu_2451_38660_las/F_150326_131440.las"
+        filepath = "./raw_data/nyu_2451_38660_las/F_150326_1314401.las"
         ingest_data(session, filepath)
         
         logging.info("Data ingestion completed successfully")

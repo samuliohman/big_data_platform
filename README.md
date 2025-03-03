@@ -1,5 +1,5 @@
 Initialize and Authenticate with Google Cloud SDK
-Run these commands to set up and authenticate your Google Cloud environment:
+Run these commands to set up and authenticate your Google Cloud environment. Project ID:bigdataplatform-449310
 ```
 gcloud init
 gcloud auth login
@@ -16,6 +16,7 @@ terraform apply
 
 # Configure cassandra using powershell script. Nodes need to be running before the script so wait a few minutes.
 .\configure_cassandra.ps1
+#powershell -ExecutionPolicy Bypass -File .\configure_cassandra.ps1
 
 terraform destroy
 ```
@@ -31,7 +32,7 @@ py -m pip install -r requirements.txt
 $NORDICS_EXT_IP = gcloud compute instances describe nordics-node --zone=europe-north1-a --format="get(networkInterfaces[0].accessConfigs[0].natIP)"
 $WEST_EXT_IP = gcloud compute instances describe eu-west-node --zone=europe-west1-b --format="get(networkInterfaces[0].accessConfigs[0].natIP)"
 
-py data_ingestion.py --nodes "$NORDICS_EXT_IP" "$WEST_EXT_IP"
+py -3.9 data_ingestion.py --nodes "$NORDICS_EXT_IP" "$WEST_EXT_IP"
 ```
 
 
@@ -53,4 +54,10 @@ gcloud compute ssh nordics-node --zone=europe-north1-a --command="dpkg -l | grep
 gcloud compute ssh nordics-node --zone=europe-north1-a --command="sudo systemctl status cassandra"
 gcloud compute ssh nordics-node --zone=europe-north1-a --command="nodetool status"
 gcloud compute ssh nordics-node --zone=europe-north1-a --command="sudo tail -f /var/log/cassandra/system.log"
+
+nodetool status
+cqlsh 34.88.93.234 9042
+use lidar_data;
+SELECT * FROM las_data LIMIT 10;
+SELECT COUNT(*) FROM las_data;
 ```
