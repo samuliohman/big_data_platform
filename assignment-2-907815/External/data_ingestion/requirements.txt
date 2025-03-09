@@ -1,5 +1,0 @@
-cassandra-driver
-lasio
-tqdm
-laspy
-numpy

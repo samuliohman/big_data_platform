@@ -1,68 +1,23 @@
-## Detailed project documentation is found in the file Project_document.pdf
+## Instructions on how to run the Cassandra cluster on a local machine
 
-### Here are instructions on how to replicate the big data platform creation
-Notice the dataset (*.las files) have to be manually downloaded from https://archive.nyu.edu/handle/2451/38660 as they do not fit in the .zip
+### Prerequisites
+- Docker and Docker Compose installed
+- The `apache-compose.yml` file
 
-Initialize and Authenticate with Google Cloud SDK
-Run these commands to set up and authenticate your Google Cloud environment. Project ID:bigdataplatform-449310
-```
-gcloud init
-gcloud auth login
-gcloud auth application-default login
-gcloud services enable compute.googleapis.com
-```
+### Running Cassandra
+```bash
+# Start the Cassandra cluster
+docker-compose -f apache-compose.yml up
 
+# Connect to the cluster from your local machine
+docker exec -it external-cassandra1-1 cqlsh
 
-Deploy Infrastructure Using Terraform
-Use Terraform to initialize, apply, and configure the Cassandra cluster. Wait a few minutes for the nodes to be running before running the configuration script:
-```
-terraform init
-terraform apply
-
-# Configure cassandra using powershell script. Nodes need to be running before the script so wait a few minutes.
-.\configure_cassandra.ps1
-#powershell -ExecutionPolicy Bypass -File .\configure_cassandra.ps1
-
-terraform destroy
+# OR if you're already inside the container
+cqlsh $(hostname -i) 9042
 ```
 
-
-Ingest Data into Cassandra
-Once the Cassandra VMs are running, use these commands to ingest data:
-```
-cd data_ingestion
-py -m pip install -r requirements.txt
-
-# Get and use nodes' external IPs
-$NORDICS_EXT_IP = gcloud compute instances describe nordics-node --zone=europe-north1-a --format="get(networkInterfaces[0].accessConfigs[0].natIP)"
-$WEST_EXT_IP = gcloud compute instances describe eu-west-node --zone=europe-west1-b --format="get(networkInterfaces[0].accessConfigs[0].natIP)"
-
-py -3.9 data_ingestion.py --nodes "$NORDICS_EXT_IP" "$WEST_EXT_IP"
+### Stopping Cassandra
+```bash
+docker-compose -f apache-compose.yml down
 ```
 
-
-Debugging Commands
-Use these commands to debug and monitor the status of your Cassandra nodes:
-```
-gcloud compute instances list
-
-# Connect using SSH
-gcloud compute ssh nordics-node --zone=europe-north1-a
-gcloud compute ssh eu-west-node --zone=europe-west1-b
-gcloud compute ssh nordics-node --zone=europe-north1-a --command="sudo journalctl -u google-startup-scripts"
-gcloud compute ssh nordics-node --zone=europe-north1-a --command="sudo journalctl -l | grep cassandra"
-
-# Check if Cassandra installed correctly
-gcloud compute ssh nordics-node --zone=europe-north1-a --command="dpkg -l | grep cassandra"
-
-# Check cassandra status
-gcloud compute ssh nordics-node --zone=europe-north1-a --command="sudo systemctl status cassandra"
-gcloud compute ssh nordics-node --zone=europe-north1-a --command="nodetool status"
-gcloud compute ssh nordics-node --zone=europe-north1-a --command="sudo tail -f /var/log/cassandra/system.log"
-
-nodetool status
-cqlsh 34.88.93.234 9042
-use lidar_data;
-SELECT * FROM las_data LIMIT 10;
-SELECT COUNT(*) FROM las_data;
-```
