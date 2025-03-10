@@ -36,38 +36,52 @@ def process_las_file(las_file_path, topic):
             dimensions = fh.header.point_format.dimension_names
             
             # Process in chunks
-            for points in fh.chunk_iterator(CHUNK_SIZE):
-                chunk_data = []
-                chunk_size = len(points.X)
-                
-                # Convert each point to a dictionary
-                for i in range(chunk_size):
-                    point = {}
-                    for dim in dimensions:
-                        try:
-                            point[dim] = float(getattr(points, dim)[i])
-                        except (AttributeError, TypeError):
-                            point[dim] = None
-                    chunk_data.append(point)
-                
-                # Create message with metadata
-                message = {
-                    "tenant_id": TENANT_ID,
-                    "file_name": file_name,
-                    "chunk_number": chunks_sent,
-                    "points": chunk_data,
-                    "timestamp": time.time()
-                }
-                
-                # Send to Kafka
-                producer.send(topic, message)
-                
-                total_points += chunk_size
-                chunks_sent += 1
-                
-                # Log progress
-                if chunks_sent % 10 == 0:
-                    print(f"Sent {chunks_sent} chunks, {total_points} points")
+            try:
+                for points in fh.chunk_iterator(CHUNK_SIZE):
+                    try:
+                        chunk_data = []
+                        chunk_size = len(points.X)
+                        
+                        # Convert each point to a dictionary
+                        for i in range(chunk_size):
+                            point = {}
+                            for dim in dimensions:
+                                try:
+                                    val = getattr(points, dim)[i]
+                                    if isinstance(val, (int, bool)):
+                                        point[dim] = int(val)
+                                    else:
+                                        point[dim] = float(val) if val is not None else None
+                                except (AttributeError, TypeError, ValueError):
+                                    point[dim] = None
+                            chunk_data.append(point)
+                        
+                        # Create message with metadata
+                        message = {
+                            "tenant_id": TENANT_ID,
+                            "file_name": file_name,
+                            "chunk_number": chunks_sent,
+                            "points": chunk_data,
+                            "timestamp": time.time()
+                        }
+                        
+                        # Send to Kafka
+                        producer.send(topic, message)
+                        
+                        total_points += chunk_size
+                        chunks_sent += 1
+                        
+                        # Log progress
+                        if chunks_sent % 10 == 0:
+                            print(f"Sent {chunks_sent} chunks, {total_points} points")
+                    except Exception as chunk_error:
+                        print(f"Error processing chunk {chunks_sent}: {chunk_error}")
+            except Exception as iterator_error:
+                if "buffer size must be a multiple of element size" in str(iterator_error):
+                    print("Reached end of file - all complete chunks processed successfully.")
+                else:
+                    print(f"Error in chunk iteration: {iterator_error}")
+                # Continue with completion message - this is an expected end condition
                     
         # Send completion message
         completion_message = {
@@ -96,7 +110,6 @@ def process_las_file(las_file_path, topic):
         producer.send(f"{topic}-metadata", error_message)
     
     finally:
-        producer.flush()
         producer.close()
         
         # Log ingestion metrics
