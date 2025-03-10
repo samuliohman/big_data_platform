@@ -8,10 +8,22 @@ from kafka import KafkaProducer
 
 # Configuration
 CHUNK_SIZE = 10000  # Points per chunk
-TENANT_ID = "tenantA"  # Tenant identifier
+DEFAULT_TENANT_ID = "tenantA"  # Default tenant identifier
+
+def extract_tenant_id(file_path):
+    """Extract tenant ID from file path"""
+    # Split the path and look for tenantA, tenantB, etc.
+    path_parts = file_path.split(os.sep)
+    for part in path_parts:
+        if part.startswith('tenant'):
+            return part
+    return DEFAULT_TENANT_ID  # Default if not found
 
 def process_las_file(las_file_path, topic):
     """Process a LAS file and send chunks to Kafka"""
+    
+    # Extract tenant ID from file path
+    tenant_id = extract_tenant_id(las_file_path)
     
     start_time = time.time()
     producer = KafkaProducer(
@@ -58,7 +70,7 @@ def process_las_file(las_file_path, topic):
                         
                         # Create message with metadata
                         message = {
-                            "tenant_id": TENANT_ID,
+                            "tenant_id": tenant_id,
                             "file_name": file_name,
                             "chunk_number": chunks_sent,
                             "points": chunk_data,
@@ -85,7 +97,7 @@ def process_las_file(las_file_path, topic):
                     
         # Send completion message
         completion_message = {
-            "tenant_id": TENANT_ID,
+            "tenant_id": tenant_id,
             "file_name": file_name,
             "status": "completed",
             "total_points": total_points,
@@ -101,7 +113,7 @@ def process_las_file(las_file_path, topic):
         print(f"Error processing file: {e}")
         # Send error message
         error_message = {
-            "tenant_id": TENANT_ID,
+            "tenant_id": tenant_id,
             "file_name": file_name,
             "status": "error",
             "error_message": str(e),
@@ -115,7 +127,7 @@ def process_las_file(las_file_path, topic):
         # Log ingestion metrics
         log_entry = {
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "tenant_id": TENANT_ID,
+            "tenant_id": tenant_id,
             "file_name": file_name,
             "file_size_mb": file_size_mb,
             "ingestion_time_sec": time.time() - start_time,
@@ -124,7 +136,7 @@ def process_las_file(las_file_path, topic):
             "errors": []
         }
         
-        with open(f"logs/{TENANT_ID}_ingestion_log.json", 'a') as log_file:
+        with open(f"logs/{tenant_id}_ingestion_log.json", 'a') as log_file:
             log_file.write(json.dumps(log_entry) + "\n")
 
 if __name__ == "__main__":

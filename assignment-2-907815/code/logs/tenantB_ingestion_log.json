@@ -1,0 +1,1 @@
+{"timestamp": "2025-03-10T17:29:03Z", "tenant_id": "tenantB", "file_name": "sample_file.las", "file_size_mb": 30.0, "ingestion_time_sec": 0.5865638256072998, "records_processed": 550000, "status": "success", "errors": []}
