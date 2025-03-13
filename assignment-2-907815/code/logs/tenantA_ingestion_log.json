@@ -1,7 +1,0 @@
-{"timestamp": "2025-03-09T22:10:29Z", "tenant_id": "tenantA", "file_name": "sample_file.las", "file_size_mb": 30.0, "ingestion_time_sec": 1.0731124877929688, "records_processed": 550000, "status": "success", "errors": []}
-{"timestamp": "2025-03-09T22:12:14Z", "tenant_id": "tenantA", "file_name": "sample_file.las", "file_size_mb": 30.0, "ingestion_time_sec": 0.5791010856628418, "records_processed": 550000, "status": "success", "errors": []}
-{"timestamp": "2025-03-09T22:12:31Z", "tenant_id": "tenantA", "file_name": "sample_file.las", "file_size_mb": 30.0, "ingestion_time_sec": 0.6206555366516113, "records_processed": 550000, "status": "success", "errors": []}
-{"timestamp": "2025-03-09T22:14:37Z", "tenant_id": "tenantA", "file_name": "sample_file.las", "file_size_mb": 30.0, "ingestion_time_sec": 0.6510610580444336, "records_processed": 550000, "status": "success", "errors": []}
-{"timestamp": "2025-03-09T22:18:26Z", "tenant_id": "tenantA", "file_name": "sample_file.las", "file_size_mb": 30.0, "ingestion_time_sec": 0.7134237289428711, "records_processed": 550000, "status": "success", "errors": []}
-{"timestamp": "2025-03-10T17:26:27Z", "tenant_id": "tenantA", "file_name": "sample_file.las", "file_size_mb": 30.0, "ingestion_time_sec": 0.5590713024139404, "records_processed": 550000, "status": "success", "errors": []}
-{"timestamp": "2025-03-10T17:26:39Z", "tenant_id": "tenantA", "file_name": "sample_file.las", "file_size_mb": 30.0, "ingestion_time_sec": 0.5877370834350586, "records_processed": 550000, "status": "success", "errors": []}

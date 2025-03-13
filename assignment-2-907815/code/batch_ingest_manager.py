@@ -1,4 +1,5 @@
 # batch_ingest_manager.py
+import sys
 import os
 import time
 import subprocess
@@ -10,6 +11,7 @@ from watchdog.events import FileSystemEventHandler
 class LasFileHandler(FileSystemEventHandler):
     def __init__(self, tenant_id):
         self.tenant_id = tenant_id
+        os.makedirs("../logs", exist_ok=True)
         
     def on_created(self, event):
         if not event.is_directory and event.src_path.lower().endswith('.las'):
@@ -29,12 +31,12 @@ class LasFileHandler(FileSystemEventHandler):
             "file_size_mb": os.path.getsize(file_path) / (1024 * 1024),
         }
         
-        with open(f"logs/{self.tenant_id}_manager_log.json", 'a') as log_file:
+        with open(f"../logs/{self.tenant_id}_manager_log.json", 'a') as log_file:
             log_file.write(json.dumps(log_entry) + "\n")
         
         # Start processing in a separate process
-        subprocess.Popen(['python', 'las_chunker.py', file_path])
-
+        subprocess.Popen([sys.executable, 'las_chunker.py', file_path])
+        
 class BatchIngestManager:
     def __init__(self, tenant_dirs):
         """Initialize the batch ingestion manager
@@ -111,7 +113,11 @@ if __name__ == "__main__":
         manager.start()
         
         # Keep the script running
+        counter = 0
         while True:
             time.sleep(1)
+            counter += 1
+            if counter % 60 == 0:  # Every minute
+                print(f"Still monitoring directories for new files... ({time.strftime('%H:%M:%S')})")
     except KeyboardInterrupt:
         manager.stop()

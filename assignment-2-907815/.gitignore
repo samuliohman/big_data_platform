@@ -1,2 +1,4 @@
 Instructions.md
-data/*
+data/**/*.csv
+data/**/*.las
+data/**/*.wdp

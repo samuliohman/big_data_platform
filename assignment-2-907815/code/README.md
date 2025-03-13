@@ -15,16 +15,23 @@ The Kafka topics raw-data and processed-data are automatically created when the 
 docker exec -it code-kafka-1 kafka-topics.sh --list --bootstrap-server localhost:9092
 ```
 
-### Data Ingestion
+### Data Ingestion (Multitenant simulation)
+Run the multitenant data producer script.
+Listens to all the tenant subdirectories (etc. ../data/tenantA) and on new file additions it automatically ingests it using kafka.
+```bash
+python3 batch_ingest_manager.py
+```
+
+### Data Ingestion (single tenant)
 Run the data producer script:
 ```bash
-python3 kafka_producer.py
+python3 las_chunker.py ../data/tenantA/sample_file.las
 ```
 
 ### Data Processing
 Run the data consumer and processor script:
 ```bash
-python3 kafka_consumer.py
+python3 las_consumer.py
 ```
 
 See the individual script files for more details on their functionality.
