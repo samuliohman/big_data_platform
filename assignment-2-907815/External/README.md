@@ -16,6 +16,18 @@ docker exec -it external-cassandra1-1 cqlsh
 cqlsh $(hostname -i) 9042
 ```
 
+### Inspect Cassandra DB
+```bash
+USE las_data;
+
+SELECT COUNT(*) FROM las_data.points_by_file;
+SELECT COUNT(*) FROM las_data.ingestion_stats;
+
+SELECT * FROM las_data.ingestion_stats LIMIT 5;
+SELECT * FROM las_data.points_by_file LIMIT 5;
+
+```
+
 ### Stopping Cassandra
 ```bash
 docker-compose -f apache-compose.yml down

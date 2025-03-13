@@ -33,5 +33,9 @@ Run the data consumer and processor script:
 ```bash
 python3 las_consumer.py
 ```
+### Checking rows in Kafka container
+```bash
+docker exec -it code-kafka-1 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic raw-data --from-beginning
+```
 
 See the individual script files for more details on their functionality.

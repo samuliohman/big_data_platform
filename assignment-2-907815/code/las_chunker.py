@@ -1,168 +1,178 @@
-# las_chunker.py
+#!/usr/bin/env python
+import sys
 import laspy
 import json
 import time
 import os
-import sys
 from kafka import KafkaProducer
-
-# Configuration
-CHUNK_SIZE = 10000  # Points per chunk
-DEFAULT_TENANT_ID = "tenantA"  # Default tenant identifier
+from kafka.errors import KafkaError
+import numpy as np
+import traceback
 
 def extract_tenant_id(file_path):
     """Extract tenant ID from file path"""
-    # Split the path and look for tenantA, tenantB, etc.
     path_parts = file_path.split(os.sep)
     for part in path_parts:
         if part.startswith('tenant'):
             return part
-    return DEFAULT_TENANT_ID  # Default if not found
+    return "tenantA"  # Default tenant
 
-def process_las_file(las_file_path, topic):
-    """Process a LAS file and send chunks to Kafka"""
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: las_chunker.py <path_to_las_file>")
+        sys.exit(1)
     
-    # Extract tenant ID from file path
-    tenant_id = extract_tenant_id(las_file_path)
+    file_path = sys.argv[1]
+    # Change topic to match what consumer is expecting
+    topic = "raw-data"  
     
-    start_time = time.time()
+    # Create a Kafka producer with JSON serialization and larger message size limit
     producer = KafkaProducer(
         bootstrap_servers=['localhost:9092'],
         value_serializer=lambda x: json.dumps(x).encode('utf-8'),
-        max_request_size=10485760  # 10MB max message size
+        max_request_size=5242880,  # 5MB max message size
+        batch_size=16384,          # Batch size in bytes
+        compression_type='gzip',   # Compress messages
+        linger_ms=100              # Wait for this time to batch messages
     )
     
-    file_size_mb = os.path.getsize(las_file_path) / (1024 * 1024)
-    file_name = os.path.basename(las_file_path)
+    # Get tenant ID and file name
+    tenant_id = extract_tenant_id(file_path)
+    file_name = os.path.basename(file_path)
     
+    # Get file size for logging
+    file_size_mb = os.path.getsize(file_path) / (1024 * 1024)
     print(f"Processing file for {tenant_id}: {file_name} ({file_size_mb:.2f} MB)")
     
-    # Track statistics
-    total_points = 0
-    chunks_sent = 0
+    # Start timing for throughput calculation
+    start_time = time.time()
+    
+    # Set chunk size in number of points
+    chunk_size = 2000 
     
     try:
         # Open LAS file with chunked reading
-        with laspy.open(las_file_path) as fh:
-            # Get all available dimensions from the file
+        with laspy.open(file_path) as fh:
+            # Get dimensions from file
             dimensions = list(fh.header.point_format.dimension_names)
-            print(f"{tenant_id}: Available dimensions: {dimensions}")  
+            print(f"{tenant_id}: Available dimensions: {dimensions}")
             
-            # Use all available dimensions instead of filtering
-            valid_dimensions = dimensions
-            print(f"{tenant_id}: Using all {len(valid_dimensions)} dimensions")
+            # Use only core dimensions to reduce message size
+            core_dimensions = ['X', 'Y', 'Z', 'intensity', 'classification', 'point_source_id']
+            print(f"{tenant_id}: Using dimensions: {core_dimensions}")
+            
+            chunk_index = 0
+            total_points = 0
             
             # Process in chunks
-            try:
-                for points in fh.chunk_iterator(CHUNK_SIZE):
-                    try:
-                        chunk_data = []
-                        chunk_size = len(points.X)
-                        
-                        # Convert each point to a dictionary, using only valid dimensions
-                        for i in range(chunk_size):
-                            point = {}
-                            for dim in valid_dimensions:
+            while True:
+                try:
+                    # Get next chunk of points
+                    points = next(fh.chunk_iterator(chunk_size))
+                    
+                    chunk_data = []
+                    current_chunk_size = len(points.X)
+                    
+                    # Convert each point to a dictionary, using only core dimensions
+                    for i in range(current_chunk_size):
+                        point = {}
+                        for dim in core_dimensions:
+                            if dim in dimensions:  # Only use dimensions that exist in the file
                                 try:
                                     val = getattr(points, dim)[i]
-                                    if isinstance(val, (int, bool)):
+                                    if isinstance(val, (int, bool, np.integer)):
                                         point[dim] = int(val)
                                     else:
                                         point[dim] = float(val) if val is not None else None
-                                    # Add debug sampling (for first point of each chunk)
-                                    if i == 0 and chunks_sent == 0:
-                                        print(f"Sample {dim} value: {point[dim]}")
-                                except (AttributeError, TypeError, ValueError) as e:
-                                    # Debug output for the first error
-                                    if i == 0 and chunks_sent == 0:
-                                        print(f"Error reading {dim}: {e}")
+                                except (AttributeError, TypeError, ValueError):
                                     point[dim] = None
-                            # Only add points that have actual data
-                            if any(point.values()):  # Only add if at least one value is non-None
-                                chunk_data.append(point)
-                        
-                        # Create message with metadata
-                        message = {
-                            "tenant_id": tenant_id,
-                            "file_name": file_name,
-                            "chunk_number": chunks_sent,
-                            "points": chunk_data,
-                            "timestamp": time.time()
-                        }
-                        
-                        # Send to Kafka
-                        producer.send(topic, message)
-                        
-                        total_points += chunk_size
-                        chunks_sent += 1
-                        
-                        # Log progress
-                        if chunks_sent % 10 == 0:
-                            print(f"{tenant_id}: Sent {chunks_sent} chunks, {total_points} points")
-                    except Exception as chunk_error:
-                        print(f"{tenant_id}: Error processing chunk {chunks_sent}: {chunk_error}")
-            except Exception as iterator_error:
-                if "buffer size must be a multiple of element size" in str(iterator_error):
-                    print(f"{tenant_id}: Reached end of file - all complete chunks processed successfully.")
-                else:
-                    print(f"{tenant_id}: Error in chunk iteration: {iterator_error}")
-                # Continue with completion message - this is an expected end condition
+                        chunk_data.append(point)
                     
+                    # Create message with metadata
+                    message = {
+                        "tenant_id": tenant_id,
+                        "file_name": file_name,
+                        "chunk_number": chunk_index,
+                        "points": chunk_data,
+                        "timestamp": time.time()
+                    }
+                    
+                    # Send the chunk to Kafka asynchronously
+                    future = producer.send(topic, value=message)
+                    
+                    # Block for confirmation (synchronous send)
+                    try:
+                        record_metadata = future.get(timeout=30)
+                        print(f"{tenant_id}: Chunk {chunk_index} with {len(chunk_data)} points sent to {record_metadata.topic}, "
+                              f"partition {record_metadata.partition} at offset {record_metadata.offset}")
+                    except KafkaError as e:
+                        print(f"{tenant_id}: Failed to send chunk {chunk_index}: {e}")
+                    
+                    total_points += len(chunk_data)
+                    chunk_index += 1
+                    
+                    # Add a flush periodically to ensure data is sent
+                    if chunk_index % 10 == 0:
+                        producer.flush()
+                        print(f"{tenant_id}: Sent {chunk_index} chunks, {total_points} points")
+                    
+                except ValueError as e:
+                    if "buffer size must be a multiple of element size" in str(e):
+                        print(f"{tenant_id}: Reached end of file - processed {total_points} points in {chunk_index} chunks.")
+                        break  # Exit the loop, we're done
+                    else:
+                        raise  # Re-raise if it's a different ValueError
+                except StopIteration:
+                    print(f"{tenant_id}: Reached end of file - all points processed.")
+                    break  # We've reached the end of the iterator
+
         # Send completion message
         completion_message = {
             "tenant_id": tenant_id,
             "file_name": file_name,
             "status": "completed",
             "total_points": total_points,
-            "total_chunks": chunks_sent,
+            "total_chunks": chunk_index,
             "file_size_mb": file_size_mb,
             "processing_time_sec": time.time() - start_time
         }
         producer.send(f"{topic}-metadata", completion_message)
-        
-        print(f"{tenant_id}: File processing complete. Sent {chunks_sent} chunks with {total_points} points.")
-    
+        print(f"{tenant_id}: Completion message sent to {topic}-metadata")
+
     except Exception as e:
-        print(f"{tenant_id}: Error processing file: {e}")
-        # Send error message
-        error_message = {
-            "tenant_id": tenant_id,
-            "file_name": file_name,
-            "status": "error",
-            "error_message": str(e),
-            "processing_time_sec": time.time() - start_time
-        }
-        producer.send(f"{topic}-metadata", error_message)
+        print(f"{tenant_id}: Error processing file {file_path}: {e}")
+        traceback.print_exc()
     
     finally:
-        producer.close()
-        throughput_mb_sec = file_size_mb / (time.time() - start_time) if (time.time() - start_time) > 0 else 0
-
+        # Log processing stats
+        processing_time = time.time() - start_time
+        throughput_mb_sec = file_size_mb / processing_time if processing_time > 0 else 0
+        
+        print(f"{tenant_id}: Processed {total_points} points in {processing_time:.2f} seconds")
+        print(f"{tenant_id}: Throughput: {throughput_mb_sec:.2f} MB/s")
+        
+        # Create logs directory if it doesn't exist
+        os.makedirs("../logs", exist_ok=True)
+        
+        # Write log entry
         log_entry = {
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
             "tenant_id": tenant_id,
             "file_name": file_name,
             "file_size_mb": file_size_mb,
-            "ingestion_time_sec": time.time() - start_time,
+            "ingestion_time_sec": processing_time,
             "throughput_mb_sec": round(throughput_mb_sec, 2),
             "records_processed": total_points,
             "status": "success" if total_points > 0 else "error",
             "errors": []
         }
         
-        # Changed from logs/ to ../logs/
         with open(f"../logs/{tenant_id}_ingestion_log.json", 'a') as log_file:
             log_file.write(json.dumps(log_entry) + "\n")
+        
+        # Wait for all messages to be sent and close the producer cleanly
+        producer.flush()
+        producer.close()
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python3 las_chunker.py path/to/las_file.las")
-        sys.exit(1)
-    
-    las_file_path = sys.argv[1]
-    
-    # Ensure logs directory exists (one level up)
-    os.makedirs("../logs", exist_ok=True)
-    
-    # Process the file and send to the raw-data topic
-    process_las_file(las_file_path, "raw-data")
+    main()

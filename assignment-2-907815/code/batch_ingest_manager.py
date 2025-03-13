@@ -22,18 +22,6 @@ class LasFileHandler(FileSystemEventHandler):
         """Process a new LAS file using the chunker"""
         print(f"Submitting {file_path} for processing...")
         
-        # Log the ingestion request
-        log_entry = {
-            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "tenant_id": self.tenant_id,
-            "file_name": os.path.basename(file_path),
-            "status": "submitted",
-            "file_size_mb": os.path.getsize(file_path) / (1024 * 1024),
-        }
-        
-        with open(f"../logs/{self.tenant_id}_manager_log.json", 'a') as log_file:
-            log_file.write(json.dumps(log_entry) + "\n")
-        
         # Start processing in a separate process
         subprocess.Popen([sys.executable, 'las_chunker.py', file_path])
         
