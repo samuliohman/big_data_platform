@@ -1,0 +1,2 @@
+{"timestamp": "2025-03-13T12:43:12Z", "tenant_id": "tenantB", "file_name": "sample_file.las", "file_size_mb": 30.0, "total_points": 550000, "processing_time_sec": 16.890204191207886, "throughput_mb_sec": 1.78, "status": "completed"}
+{"timestamp": "2025-03-13T12:49:18Z", "tenant_id": "tenantB", "file_name": "sample_file.las", "file_size_mb": 30.0, "total_points": 550000, "processing_time_sec": 18.23888897895813, "throughput_mb_sec": 1.64, "status": "completed"}

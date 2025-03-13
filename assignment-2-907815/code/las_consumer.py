@@ -115,70 +115,83 @@ def process_chunk(message):
     file_id = uuid.uuid5(uuid.NAMESPACE_DNS, f"{tenant_id}:{file_name}")
     
     start_time = time.time()
-    batch_size = 100
+    
+    # OPTIMIZATION 1: Increase batch size for better throughput
+    batch_size = 250  # Increased from 100
+    
+    # OPTIMIZATION 2: Prepare all point data before batching
+    prepared_points = []
+    for point in points:
+        point_id = uuid.uuid4()
+        prepared_points.append({
+            'id': point_id,
+            'x': point.get('X', 0.0),
+            'y': point.get('Y', 0.0),
+            'z': point.get('Z', 0.0),
+            'intensity': point.get('intensity', 0.0),
+            'classification': int(point.get('classification', 0)),
+            'point_source_id': int(point.get('point_source_id', 0)),
+            'scan_angle_rank': int(point.get('scan_angle_rank', 0))
+        })
     
     # Process points in batches with retry logic
-    for i in range(0, len(points), batch_size):
+    for i in range(0, len(prepared_points), batch_size):
         max_retries = 3
         retry_count = 0
         success = False
         
         while retry_count < max_retries and not success:
             try:
-                batch_points = points[i:i+batch_size]
+                batch_points = prepared_points[i:i+batch_size]
                 
-                # Create batch for faster inserts
+                # OPTIMIZATION 3: Use UNLOGGED batch with larger payload
                 batch = BatchStatement(batch_type=BatchType.UNLOGGED)
                 
+                # OPTIMIZATION 4: Bulk add to batch
                 for point in batch_points:
-                    # Extract point data with defaults for missing values
-                    point_id = uuid.uuid4()
-                    x = point.get('X', 0.0)
-                    y = point.get('Y', 0.0)
-                    z = point.get('Z', 0.0)
-                    intensity = point.get('intensity', 0.0)
-                    classification = int(point.get('classification', 0))
-                    point_source_id = int(point.get('point_source_id', 0))
-                    scan_angle_rank = int(point.get('scan_angle_rank', 0))
-                    
-                    # Add to batch instead of executing individually
                     batch.add(point_insert_stmt, (
-                        file_id, tenant_id, file_name, point_id,
-                        x, y, z, intensity, classification, point_source_id, scan_angle_rank
+                        file_id, tenant_id, file_name, point['id'],
+                        point['x'], point['y'], point['z'], 
+                        point['intensity'], point['classification'], 
+                        point['point_source_id'], point['scan_angle_rank']
                     ))
                 
-                # Execute the entire batch at once
+                # Execute batch with NON_QUORUM consistency for speed
+                batch.consistency_level = ConsistencyLevel.ONE
                 session.execute(batch)
-                success = True  # If we get here without exception, it worked
+                success = True
                 
             except Exception as e:
                 retry_count += 1
                 print(f"Error processing batch {i//batch_size}: {e}. Retry {retry_count}/{max_retries}")
                 
-                # For batch too large errors, fall back to individual inserts
+                # Fallback to smaller batches if needed
                 if "Batch too large" in str(e) and retry_count == 1:
-                    print("Batch too large, falling back to individual inserts")
+                    print("Batch too large, falling back to smaller batches")
                     try:
-                        for point in batch_points:
-                            point_id = uuid.uuid4()
-                            x = point.get('X', 0.0)
-                            y = point.get('Y', 0.0)
-                            z = point.get('Z', 0.0)
-                            intensity = point.get('intensity', 0.0)
-                            classification = int(point.get('classification', 0))
-                            point_source_id = int(point.get('point_source_id', 0))
-                            scan_angle_rank = int(point.get('scan_angle_rank', 0))
+                        # Split the batch into two smaller batches
+                        half_size = len(batch_points) // 2
+                        
+                        for split_start in [0, half_size]:
+                            split_batch = BatchStatement(batch_type=BatchType.UNLOGGED)
+                            split_points = batch_points[split_start:split_start+half_size]
                             
-                            session.execute(point_insert_stmt, (
-                                file_id, tenant_id, file_name, point_id,
-                                x, y, z, intensity, classification, point_source_id, scan_angle_rank
-                            ))
+                            for point in split_points:
+                                split_batch.add(point_insert_stmt, (
+                                    file_id, tenant_id, file_name, point['id'],
+                                    point['x'], point['y'], point['z'], 
+                                    point['intensity'], point['classification'], 
+                                    point['point_source_id'], point['scan_angle_rank']
+                                ))
+                            
+                            session.execute(split_batch)
+                            
                         success = True
                         continue
                     except Exception as inner_e:
-                        print(f"Individual inserts failed too: {inner_e}")
+                        print(f"Smaller batch inserts failed too: {inner_e}")
                 
-                time.sleep(2)  # Wait before retry
+                time.sleep(1)  # Reduced wait time before retry
                 
                 # Original reconnection logic follows
                 

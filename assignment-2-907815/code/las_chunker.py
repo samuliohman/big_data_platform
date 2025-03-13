@@ -48,18 +48,16 @@ def main():
     start_time = time.time()
     
     # Set chunk size in number of points
-    chunk_size = 2000 
+    chunk_size = 10000 
     
     try:
         # Open LAS file with chunked reading
         with laspy.open(file_path) as fh:
             # Get dimensions from file
             dimensions = list(fh.header.point_format.dimension_names)
-            print(f"{tenant_id}: Available dimensions: {dimensions}")
             
             # Use only core dimensions to reduce message size
             core_dimensions = ['X', 'Y', 'Z', 'intensity', 'classification', 'point_source_id']
-            print(f"{tenant_id}: Using dimensions: {core_dimensions}")
             
             chunk_index = 0
             total_points = 0
@@ -100,11 +98,8 @@ def main():
                     # Send the chunk to Kafka asynchronously
                     future = producer.send(topic, value=message)
                     
-                    # Block for confirmation (synchronous send)
                     try:
-                        record_metadata = future.get(timeout=30)
-                        print(f"{tenant_id}: Chunk {chunk_index} with {len(chunk_data)} points sent to {record_metadata.topic}, "
-                              f"partition {record_metadata.partition} at offset {record_metadata.offset}")
+                        future.get(timeout=30) 
                     except KafkaError as e:
                         print(f"{tenant_id}: Failed to send chunk {chunk_index}: {e}")
                     
