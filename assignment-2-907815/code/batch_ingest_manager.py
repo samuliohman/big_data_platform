@@ -94,6 +94,7 @@ if __name__ == "__main__":
     tenant_dirs = {
         "tenantA": "../data/tenantA",
         "tenantB": "../data/tenantB"
+        "tenantC": "../data/tenantC"
     }
     
     # Ensure logs directory exists
