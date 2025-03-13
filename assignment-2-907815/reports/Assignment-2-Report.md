@@ -187,11 +187,14 @@ Test pipelines in the project validate the data wrangling capabilities by transf
 - **Batch Processing Optimization:** Dynamically adjusting batch sizes for efficient Cassandra writes.
 - **Compression:** Employing GZIP to reduce message sizes for improved network transfer efficiency.
 
-Performance tests using sample LAS files yielded the following results:
-- **TenantA:** Average throughput of 2.5 MB/s with an average message processing time of 250ms.
-- **TenantB:** Average throughput of 2.1 MB/s with an average message processing time of 320ms.
+I performed tests with varying numbers of tenants (1 vs. 3) and files (1, 2, and 4). Average throughput (MB/s) results are shown below:
 
-These results reflect the impact of variations in message size and point cloud complexity, demonstrating that the implemented optimizations effectively enhance overall system performance.
+| Tenants / Files |   1   |   2   |   4   |
+|-----------------|-------|-------|-------|
+| 1 Tenant        |  1.83 |  1.63 |  1.54 |
+| 3 Tenants       |  1.58 |  1.30 |  0.69 |
+
+These results reflect the impact of variations in message size and point cloud complexity, demonstrating that the implemented optimizations effectively enhance overall system performance. You can notice the performace starts to decrease as number of simultaneous instances grow. Max throughput was 8.28 MB/s (4 Tenants * 3 files * 0.69MB/s).
 
 ### 4. Monitoring System:
 

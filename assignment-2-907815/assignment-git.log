@@ -1,2 +1,142 @@
 the content of this file should be the output of the log of your own git project for this assignment
 using git log command to export your git log
+
+commit 3b666e089cfd21f1899dd2703c56ee7501ea44e7 (HEAD -> main, origin/main, origin/HEAD)
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Mar 13 20:10:02 2025 +0200
+
+    Added selfgrading and finished reports.
+
+commit 8914c9685d7d175121481ec66a694996878d5fde
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Mar 13 19:00:36 2025 +0200
+
+    Readjusting documentation to better reflect the final project.
+
+commit 1d1f3538e544077f6ee6775f4c1b81493ec5f18e
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Mar 13 14:50:13 2025 +0200
+
+    Improved the speed of ingestion and consumption
+
+commit 443171615bd36bc5a1c7ba9f51ecb95ee5770d3d
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Mar 13 14:30:19 2025 +0200
+
+    Fixed the whole ingestion/consumer pipeline.
+
+commit 21ff329390776b0003f38739cd1d699fe4cba3ad
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Mar 13 12:12:36 2025 +0200
+
+    Added missing comma in batch_ingestion
+
+commit 9cd1c5a5066574916c78c2990720c2fde57a4ebf
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Mar 13 12:11:30 2025 +0200
+
+    Added this tenant and .gitkeep files to include tenant folders.
+
+commit 24895872e7c1a24675d73609603b60dddeb6174a
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Mar 13 12:08:01 2025 +0200
+
+    Added data tenantfolders and fixed batch_ingestion
+
+commit a9301a44d2343a8c3686b95ca2e2f145c4b95a46
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 10 19:29:17 2025 +0200
+
+    Logging fixed
+
+commit 7aa0a70e9679bb864715bf9df663f3cd30f5e30c
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 10 19:28:20 2025 +0200
+
+    Fixed las_chunker and added logging
+
+commit cd4137a6752115befd1cdfc01676548989078c29
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Sun Mar 9 23:56:27 2025 +0200
+
+    Cleaned gitignore and renamed a file more clearly
+
+commit fce9040314603ab15f73863f4a7cedaf1b42d3b9
+Author: samuliohman <samuli@LAPTOP-C00GC8SG>
+Date:   Sun Mar 9 22:57:04 2025 +0200
+
+    Removed unneeded files and fixed external directory
+
+commit e0b3cc89c3f425443754e20d0b864c097f55cb9c
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 13:14:56 2025 +0200
+
+    Improved design, added todo and removed unneeded files
+
+commit dd85525f13f88cc5b8959563f5f9aa3099e7ca8a
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 12:15:27 2025 +0200
+
+    Removed a file
+
+commit 6df09f84c165b2cd8f86f4c4134790fe20b147f5
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 12:14:40 2025 +0200
+
+    Initial commit for assignment2
+
+commit 1fe76319a5bf6480872dafae13350004fb547d90
+Merge: 292b39d 89019c6
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 10:20:41 2025 +0200
+
+    Merge branch 'main' of https://github.com/samuliohman/big_data_platform
+
+commit 292b39df4fa79307658b96c2ba0894d31e612e9a
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 10:19:29 2025 +0200
+
+    Final changes
+
+commit 89019c6ae8f856c4bc4b2e1359288a87b22bfa94
+Author: samuliohman <108422409+samuliohman@users.noreply.github.com>
+Date:   Thu Feb 6 15:20:16 2025 +0200
+
+    Update README.md
+
+commit 23d206a83e688462411cadc98f5364fc771a5d7d
+Author: samuliohman <108422409+samuliohman@users.noreply.github.com>
+Date:   Thu Feb 6 15:16:16 2025 +0200
+
+    Update README.md
+Date:   Mon Mar 3 12:14:40 2025 +0200
+
+    Initial commit for assignment2
+
+commit 1fe76319a5bf6480872dafae13350004fb547d90
+Merge: 292b39d 89019c6
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 10:20:41 2025 +0200
+
+    Merge branch 'main' of https://github.com/samuliohman/big_data_platform
+
+commit 292b39df4fa79307658b96c2ba0894d31e612e9a
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 10:19:29 2025 +0200
+commit e0b3cc89c3f425443754e20d0b864c097f55cb9c
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 13:14:56 2025 +0200
+
+    Improved design, added todo and removed unneeded files
+
+commit dd85525f13f88cc5b8959563f5f9aa3099e7ca8a
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 12:15:27 2025 +0200
+
+    Removed a file
+
+commit 6df09f84c165b2cd8f86f4c4134790fe20b147f5
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Mon Mar 3 12:14:40 2025 +0200
+
+    Initial commit for assignment2
