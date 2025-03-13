@@ -93,7 +93,7 @@ if __name__ == "__main__":
     # Configure tenant directories
     tenant_dirs = {
         "tenantA": "../data/tenantA",
-        "tenantB": "../data/tenantB"
+        "tenantB": "../data/tenantB",
         "tenantC": "../data/tenantC"
     }
     
