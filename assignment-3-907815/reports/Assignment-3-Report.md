@@ -14,8 +14,6 @@
   - (iv) When and how the batch analytics determines silver data as input.  
 - *(1 point)*  
 
----
-
 ### Dataset Selection and Suitability for Streaming Analytics  
 
 #### Raw Dataset  
@@ -31,8 +29,6 @@ We're working with the `vm_cpu_readings-file-*-of-195.csv.gz` subset from the Mi
   - **High Velocity**: Metrics arrive continuously, mimicking real-time telemetry.  
   - **Time-Sensitive**: Quick insights help in proactive scaling.  
   - **Built-in Time Partitioning**: The timestamp field makes it easy to apply windowed aggregations.  
-
----
 
 ### Streaming Analytics (`tenantstreamapp`)  
 
@@ -51,8 +47,6 @@ We're working with the `vm_cpu_readings-file-*-of-195.csv.gz` subset from the Mi
   }
   ```  
 - **Data Sink**: Anomaly alerts are stored in Cassandra (low-latency access) and pushed to Kafka for real-time notifications.  
-
----
 
 ### Batch Analytics (`tenantbatchapp`)  
 
@@ -73,7 +67,6 @@ We're working with the `vm_cpu_readings-file-*-of-195.csv.gz` subset from the Mi
 - **Scheduling**: Runs daily at 00:00 UTC, processing all silver data up to the previous midnight.  
 - **Storage**: Reads from Cassandra (silver) and writes results to a separate Cassandra table for gold data.  
 
----
 
 ### Data Flow and Trigger Logic  
 
@@ -83,7 +76,6 @@ We're working with the `vm_cpu_readings-file-*-of-195.csv.gz` subset from the Mi
 - Example:  
   - If the batch job runs on `2025-03-20`, it picks up everything up to `2025-03-19 23:59:59`.  
 
----
 
 ### Why This Approach?  
 - **Streaming = Real-Time Response**: Quickly detects CPU spikes so tenants can act fast.  
@@ -92,6 +84,7 @@ We're working with the `vm_cpu_readings-file-*-of-195.csv.gz` subset from the Mi
 
 This setup makes full use of the dataset’s time-based structure and works well within our platform's stack (Kafka, Spark, Cassandra).
 
+---
 
 ## 1.2 Messaging System Considerations  
 - The tenant will send raw data through a messaging system, which provides stream data sources.  
@@ -125,8 +118,6 @@ Non-keyed streams would process data globally, leading to:
 - Inaccurate per-VM aggregations (e.g., mixing CPU metrics across VMs from different tenants).
 - Inefficient state management (e.g., storing all VM states in a single task).
 
----
-
 ### (ii) Message Delivery Guarantees  
 At-Least-Once Delivery is suitable for this tenant’s streaming analytics.
 
@@ -156,6 +147,8 @@ If Kafka retries a message due to a transient failure, the same (`tenant_id, vm_
 
 This design aligns with the tenant’s need for real-time anomaly detection and leverages Kafka’s keyed topics and delivery guarantees effectively.
 
+---
+
 ## 1.3 Time, Windowing, and Data Order  
 - Given streaming data from the tenant, explain and give examples for:  
   - (i) Which types of time should be associated with stream data sources for the analytics and be considered in stream processing.  
@@ -179,7 +172,6 @@ For this tenant’s streaming analytics, **event time** is the primary time.
 - **Example:**  
   If raw data lacks timestamps, assign `processing_time = current_time` during ingestion. However, this would limit time-based analytics accuracy.  
 
----
 
 #### (ii) Window Types  
 **Tumbling windows** (fixed, non-overlapping intervals) are used for this use case.
@@ -200,7 +192,6 @@ For this tenant’s streaming analytics, **event time** is the primary time.
 - **Sliding Windows:** Overkill for periodic reporting (e.g., no need for 5-minute averages every 1 minute).  
 - **Session Windows:** Irrelevant for evenly spaced telemetry data.  
 
----
 
 #### (iii) Causes of Out-of-Order Data  
 In the tenant’s scenario, out-of-order data can arise due to:
@@ -210,7 +201,6 @@ In the tenant’s scenario, out-of-order data can arise due to:
 - **Distributed System Variability:** Parallel data producers (VMs) may emit data at slightly different rates.  
   - *Example:* Two VMs emit `timestamp=12:00` readings, but one is delayed by a garbage collection pause.
 
----
 
 #### (iv) Watermarks  
 **Watermarks are required** for this use case.
@@ -231,7 +221,6 @@ In the tenant’s scenario, out-of-order data can arise due to:
 - Longer Delay: Captures more late data but increases latency/memory usage.
 - Shorter Delay: Reduces latency but risks missing late events.
 
----
 
 ### Summary  
 - **Event Time:** Mandatory for accurate VM performance analysis.
@@ -240,6 +229,8 @@ In the tenant’s scenario, out-of-order data can arise due to:
 - **Watermarks:** Critical to balance latency and completeness in results.
 
 This design ensures robust handling of real-world data quirks while maintaining low-latency alerts for the tenant.
+
+---
 
 ## 1.4 Performance Metrics 
 - List important performance metrics for the streaming analytics for your tenant cases.  
@@ -324,8 +315,6 @@ This design ensures robust handling of real-world data quirks while maintaining 
     - Component Impact: Adjust watermark tolerance or optimize event-time handling.  
 
 ---
-
-
 
 ## 1.5 Architecture Design  
 - Provide a design of your architecture for the streaming analytics service, clarifying:  
