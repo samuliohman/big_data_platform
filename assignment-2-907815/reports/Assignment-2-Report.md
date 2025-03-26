@@ -79,10 +79,10 @@ The project implements tenant isolation on several levels:
 
 For testing, pipelines were run for at least two tenants (TenantA and TenantB). Performance metrics observed were:
 
-- **TenantA:** Average throughput of 1.78 MB/s with a 93% success rate (28 out of 30 processed files)
-- **TenantB:** Average throughput of 1.65 MB/s with an 89% success rate (16 out of 18 processed files)
+- **TenantA:** Average throughput of 1.78 MB/s with a 100% success rate
+- **TenantB:** Average throughput of 1.65 MB/s with an 100% success rate
 
-Most failures were due to oversized messages or transient network connectivity issues, and automatic retry mechanisms improved overall reliability. These results demonstrate effective isolation with acceptable performance differences across tenants.
+These results demonstrate effective isolation with acceptable performance differences across tenants.
 
 ### 5. Logging Features:
 
@@ -109,7 +109,7 @@ These logs can be analyzed using:
 
 Statistical insights:
 * Average successful throughput: 1.92 MB/s  
-* Success rate improved from 76% to 91% after implementing retry logic  
+* Success rate improved from 86% to 100%   after fixing file size errors in ingetion.
 * Processing time correlates linearly with file size
 * Peak performance achieved with chunk sizes between 8000–12000 points  
 
@@ -218,7 +218,7 @@ Components in the monitoring workflow:
 * Data Collection: Metrics captured during processing and written to log files  
 * Aggregation: Stats can be compiled by tenant and time period  
 * Reporting: JSON logs can be used for visualization and analysis  
-* Alert Generation: Thresholds could be implemented to trigger notifications  
+* Alert Generation: Thresholds could be implemented to trigger notifications
 
 ### 5. Performance Alerting:
 

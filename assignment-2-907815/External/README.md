@@ -10,7 +10,8 @@
 docker-compose -f apache-compose.yml up
 
 # Connect to the cluster from your local machine
-docker exec -it external-cassandra1-1 cqlsh
+docker exec -it external-cassandra1-1 cqlsh --request-timeout=60
+
 
 # OR if you're already inside the container
 cqlsh $(hostname -i) 9042

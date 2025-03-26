@@ -302,13 +302,18 @@ def main():
     except Exception as e:
         print(f"Error checking Kafka topics: {e}")
     
+    # Add a command-line argument for unique instance ID
+    import sys
+    instance_id = sys.argv[1] if len(sys.argv) > 1 else "default"
+    group_id = f"las-processor-{instance_id}"
+
     # Create Kafka consumer for data chunks with timeout
     print("Initializing raw-data consumer...")
     consumer = KafkaConsumer(
         'raw-data',
         bootstrap_servers=['localhost:9092'],
         auto_offset_reset='earliest',
-        group_id='las-processor',
+        group_id=group_id,  # Unique per instance
         value_deserializer=lambda x: json.loads(x.decode('utf-8')),
         consumer_timeout_ms=10000  # 10 seconds timeout
     )

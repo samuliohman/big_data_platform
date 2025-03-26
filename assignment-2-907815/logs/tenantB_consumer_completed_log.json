@@ -1,2 +1,5 @@
 {"timestamp": "2025-03-13T12:43:12Z", "tenant_id": "tenantB", "file_name": "sample_file.las", "file_size_mb": 30.0, "total_points": 550000, "processing_time_sec": 16.890204191207886, "throughput_mb_sec": 1.78, "status": "completed"}
 {"timestamp": "2025-03-13T12:49:18Z", "tenant_id": "tenantB", "file_name": "sample_file.las", "file_size_mb": 30.0, "total_points": 550000, "processing_time_sec": 18.23888897895813, "throughput_mb_sec": 1.64, "status": "completed"}
+{"timestamp": "2025-03-24T10:19:52Z", "tenant_id": "tenantB", "file_name": "sample_file1.las", "file_size_mb": 30.0, "total_points": 550000, "processing_time_sec": 20.36007332801819, "throughput_mb_sec": 1.47, "status": "completed"}
+{"timestamp": "2025-03-24T11:13:04Z", "tenant_id": "tenantB", "file_name": "sample_file1.las", "file_size_mb": 30.0, "total_points": 550000, "processing_time_sec": 26.198139429092407, "throughput_mb_sec": 1.15, "status": "completed"}
+{"timestamp": "2025-03-24T12:17:20Z", "tenant_id": "tenantB", "file_name": "sample_file1.las", "file_size_mb": 30.0, "total_points": 550000, "processing_time_sec": 21.647353649139404, "throughput_mb_sec": 1.39, "status": "completed"}

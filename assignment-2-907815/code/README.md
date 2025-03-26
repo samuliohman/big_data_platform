@@ -31,7 +31,7 @@ python3 las_chunker.py ../data/tenantA/sample_file.las
 ### Data Processing
 Run the data consumer and processor script:
 ```bash
-python3 las_consumer.py
+python3 las_consumer.py instance1
 ```
 ### Checking rows in Kafka container
 ```bash
