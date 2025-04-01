@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  # Kafka services
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - bigdata-net
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+      - "9093:9093"
+    environment:
+      # Configure multiple listeners
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafkaspark-kafka-1:9092,OUTSIDE://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9092,OUTSIDE://0.0.0.0:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "raw-vm-metrics:1:1,silver-vm-metrics:1:1,gold-vm-metrics:1:1,vm-anomalies:1:1"
+      # Setting retention limits to free Kafka memory (2GB or 1 hour)
+      KAFKA_LOG_RETENTION_BYTES: 2147483648
+      KAFKA_LOG_RETENTION_HOURS: 1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+    networks:
+      - bigdata-net
+
+  # Spark services
+  spark-master:
+    image: bitnami/spark:3.5.0
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_LOCAL_IP=spark-master
+      - SPARK_DRIVER_MEMORY=4G
+      - SPARK_PACKAGES=org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0,com.datastax.spark:spark-cassandra-connector_2.12:3.4.0
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    networks:
+      - bigdata-net
+    volumes:
+      - ./spark-apps:/opt/spark-apps
+    depends_on:
+      - kafka
+
+  spark-worker:
+    image: bitnami/spark:3.5.0
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=4G
+      - SPARK_WORKER_CORES=2
+      - SPARK_LOCAL_IP=spark-worker
+    networks:
+      - bigdata-net
+    depends_on:
+      - spark-master
+
+networks:
+  bigdata-net:
+    driver: bridge

@@ -1,0 +1,35 @@
+{
+  "type": "struct",
+  "fields": [
+    {
+      "name": "timestamp",
+      "type": "long",
+      "nullable": true
+    },
+    {
+      "name": "vm_id",
+      "type": "string",
+      "nullable": true
+    },
+    {
+      "name": "min_cpu",
+      "type": "double",
+      "nullable": true
+    },
+    {
+      "name": "max_cpu",
+      "type": "double",
+      "nullable": true
+    },
+    {
+      "name": "avg_cpu",
+      "type": "double",
+      "nullable": true
+    }
+  ],
+  "data_dirs": [
+    "../data/tenantA",
+    "../data/tenantB",
+    "../data/tenantC"
+  ]
+}
