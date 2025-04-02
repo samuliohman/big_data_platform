@@ -140,7 +140,13 @@ def process_and_send_data(data_dir, schema, producer, topic="raw-vm-metrics"):
     
     total_sent = 0
     total_errors = 0
+    total_filtered = 0  # Track filtered records
     batch_size = 100  # Send records in batches of this size
+    
+    # Find the index of vm_id in the schema
+    vm_id_index = next((i for i, field in enumerate(schema_fields) if field["name"] == "vm_id"), -1)
+    if vm_id_index == -1:
+        print("Warning: vm_id field not found in schema. Filtering will be skipped.")
     
     for file_path in files:
         print(f"Reading data from {file_path}")
@@ -171,6 +177,14 @@ def process_and_send_data(data_dir, schema, producer, topic="raw-vm-metrics"):
                 
                 if len(row) >= len(schema_fields):
                     try:
+                        # Get vm_id for filtering before creating the full data point
+                        if vm_id_index >= 0 and vm_id_index < len(row):
+                            vm_id = row[vm_id_index]
+                            # Apply the filter: only process if hash(vm_id) % 10 == 0
+                            if hash(vm_id) % 1000 != 0:
+                                total_filtered += 1
+                                continue  # Skip this record
+                        
                         data_point = {}
                         for idx, field in enumerate(schema_fields):
                             field_name = field["name"]
@@ -217,8 +231,10 @@ def process_and_send_data(data_dir, schema, producer, topic="raw-vm-metrics"):
         
         print(f"Finished reading {line_count} lines from {file_path}")
         print(f"Valid records: {valid_records}, Invalid records: {invalid_records}")
+        print(f"Filtered out records (non-selected VMs): {total_filtered}")
     
     print(f"Total records sent: {total_sent}")
+    print(f"Total records filtered: {total_filtered}")
     print(f"Total errors: {total_errors}")
     return total_sent
 

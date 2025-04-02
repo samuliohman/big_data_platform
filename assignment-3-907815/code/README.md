@@ -29,9 +29,10 @@ TODO:
 - Implement tenantbatchapp -> golden data
 - Update documentation
 - idea for parallelization:
-    cpu_df = cpu_df.filter(expr("hash(vm_id) % 100 = 0"))  # Process 25% of VMs
+    cpu_df = cpu_df.filter(expr("hash(vm_id) % 10 = 0"))  # Process 10% of VMs
 - fix data retention limits to function properly with memory limits
 - fix the timestamps to work properly (instead of just integer timestamps), think about watermarks.
+- Silver data to cassandra also
 - Demonstrate graph for example a single device IDs cpu_util
 - performance metrics?
 
@@ -43,21 +44,44 @@ docker exec -it kafkaspark-kafka-1 kafka-console-consumer.sh --bootstrap-server 
 
 # Copy from your host to the container
 docker cp tenantstreamapp.py kafkaspark-spark-master-1:/opt/bitnami/spark/
+docker cp tenantbatchapp.py kafkaspark-spark-master-1:/opt/bitnami/spark/
+docker cp cassandra_utils.py kafkaspark-spark-master-1:/opt/bitnami/spark/
 docker cp configuration.json kafkaspark-spark-master-1:/opt/bitnami/spark/
 
-docker exec -it kafkaspark-spark-master-1 spark-submit \
-    --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
-    --driver-memory 6g \
-    --executor-memory 2g \
-    --conf spark.executor.memoryOverhead=1g \
-    --conf spark.driver.memoryOverhead=1g \
-    /opt/bitnami/spark/tenantstreamapp.py
-
 # Execute spark-submit inside the container
+docker exec -it kafkaspark-spark-master-1 pip install cassandra-driver
+
 docker exec -it kafkaspark-spark-master-1 spark-submit \
     --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
     /opt/bitnami/spark/tenantstreamapp.py
 
-    docker exec -it kafkaspark-spark-master-1 spark-submit \
+
+# Execute batch app inside the container (process all data)
+docker exec -it kafkaspark-spark-master-1 pip install cassandra-driver
+docker exec -it kafkaspark-spark-master-1 spark-submit \
     --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
-    /opt/bitnami/spark/tenantstreamapp.py
+    /opt/bitnami/spark/tenantbatchapp.py --manual
+
+# OR: Process only the last 24 hours
+docker exec -it kafkaspark-spark-master-1 spark-submit \
+    --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
+    /opt/bitnami/spark/tenantbatchapp.py --hours 24
+
+# Run the batch app daily
+docker exec -it kafkaspark-spark-master-1 spark-submit \
+    --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
+    /opt/bitnami/spark/tenantbatchapp.py --hours 24
+
+
+
+# Basic usage (connects to localhost:9042 by default)
+python cassandra_client.py
+
+# Connect to a specific Cassandra node on a custom port
+python cassandra_client.py --host localhost --port 9042 --mode silver
+
+# View silver data for a specific VM
+python cassandra_client.py --mode silver --vm "your-vm-id-here" --hours 48
+
+# View gold recommendations
+python cassandra_client.py --mode gold

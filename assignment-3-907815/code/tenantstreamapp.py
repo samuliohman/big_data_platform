@@ -1,11 +1,13 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import from_json, col, to_timestamp, expr, window, when, lit
+from pyspark.sql.functions import from_json, col, to_timestamp, expr, window, when, lit, from_unixtime
 from pyspark.sql.types import StructType, StructField, StringType, DoubleType, LongType, BooleanType
 from datetime import datetime
 import os
 import json
+from cassandra_utils import CassandraManager
 
 BROKER_ADDRESS = "kafkaspark-kafka-1:9092"
+CASSANDRA_HOST = "cassandra1"  # Hostname of the first Cassandra node
 
 def load_schema_from_json(file_path):
     """Load schema from a JSON file"""
@@ -47,6 +49,33 @@ def create_spark_session():
             .master("local[2]")  # Reduce cores to 2 instead of all
             .getOrCreate())
 
+def write_to_cassandra(batch_df, batch_id):
+    """Write batch data to Cassandra"""
+    try:
+        # Create Cassandra connection for this batch
+        cassandra = CassandraManager(host=CASSANDRA_HOST).connect()
+        
+        # Collect data from DataFrame
+        records = []
+        for row in batch_df.collect():
+            records.append({
+                "vm_id": row.vm_id,
+                "window_start": datetime.strptime(row.window_start, "%Y-%m-%d %H:%M:%S"),
+                "window_end": datetime.strptime(row.window_end, "%Y-%m-%d %H:%M:%S"),
+                "avg_max_cpu": row.avg_max_cpu,
+                "is_window_anomaly": row.is_window_anomaly
+            })
+        
+        # Insert data in batches
+        if records:
+            success = cassandra.batch_insert_silver_data(records)
+            print(f"Batch {batch_id}: Inserted {len(records)} records to Cassandra ({success})")
+        
+        # Close connection
+        cassandra.close()
+    except Exception as e:
+        print(f"Error writing batch {batch_id} to Cassandra: {e}")
+
 def main():
     # Create Spark session with optimized settings
     spark = create_spark_session()
@@ -75,11 +104,9 @@ def main():
     cpu_df = parsed_df.select(from_json(col("json_data"), cpu_schema).alias("data")).select("data.*")
     
     # Convert timestamp and mark anomalies in one step
-    cpu_df = cpu_df.withColumn("event_time", to_timestamp(col("timestamp"))) \
+    cpu_df = cpu_df.withColumn("adjusted_timestamp", col("timestamp") + 1546300800) \
+                   .withColumn("event_time", to_timestamp(col("adjusted_timestamp"))) \
                    .withColumn("is_anomaly", when(col("max_cpu") > 90.0, True).otherwise(False))
-    
-    # Optional: Sample a small portion for testing
-    # cpu_df = cpu_df.sample(0.1)  # Uncomment this to process just 10% of data
     
     # Use a shorter window to reduce state size
     windowed_df = cpu_df \
@@ -124,6 +151,14 @@ def main():
                     .option("maxOffsetsPerTrigger", 500)
                     .outputMode("update")
                     .start())
+    
+    # Write to Cassandra
+    cassandra_query = (silver_df
+                       .writeStream
+                       .foreachBatch(write_to_cassandra)
+                       .outputMode("update")
+                       .option("checkpointLocation", "/tmp/checkpoint/cassandra")
+                       .start())
     
     # Wait for termination
     spark.streams.awaitAnyTermination()

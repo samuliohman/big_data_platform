@@ -69,4 +69,5 @@ services:
 
 networks:
   bigdata-net:
-    driver: bridge
+    external: true
+    name: bigdata-shared-network

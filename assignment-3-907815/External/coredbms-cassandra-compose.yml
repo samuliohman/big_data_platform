@@ -1,0 +1,36 @@
+version: '3.4'
+x-cassandra: &cassandras
+  CASSANDRA_CLUSTER_NAME: tutorials
+  CASSANDRA_SEEDS: cassandra1
+  HEAP_NEWSIZE: 512M
+  MAX_HEAP_SIZE: 1G
+  CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+    
+x-expose: &exposes
+    - "7000" # intra-node communication
+    - "7001" # TLS intra node communication
+    - "7199" # JMX
+    - "9042" # CQL
+    - "9142" # CQL TLS
+    - "9160" # Thrift
+services: 
+  cassandra1:
+    image: cassandra:latest
+    hostname: cassandra1
+    environment: 
+      CASSANDRA_CLUSTER_NAME: tutorials
+      CASSANDRA_SEEDS: cassandra1
+      HEAP_NEWSIZE: 512M
+      MAX_HEAP_SIZE: 1G
+      CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+      CASSANDRA_DC: DC1
+    expose: *exposes
+    ports: 
+      - "9042:9042"
+    networks:
+      - cassandra-net
+
+networks:
+  cassandra-net:
+    external: true
+    name: bigdata-shared-network

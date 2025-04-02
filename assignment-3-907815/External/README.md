@@ -2,12 +2,12 @@
 
 ### Prerequisites
 - Docker and Docker Compose installed
-- The `apache-compose.yml` file
+- The `coredbms-cassandra-compose.yml` file
 
 ### Running Cassandra
 ```bash
 # Start the Cassandra cluster
-docker-compose -f apache-compose.yml up
+docker-compose -f coredbms-cassandra-compose.yml up -d
 
 # Connect to the cluster from your local machine
 docker exec -it external-cassandra1-1 cqlsh --request-timeout=60
@@ -19,18 +19,20 @@ cqlsh $(hostname -i) 9042
 
 ### Inspect Cassandra DB
 ```bash
-USE las_data;
+DESCRIBE KEYSPACES;
+USE vm_metrics;
+DESCRIBE TABLES;
 
-SELECT COUNT(*) FROM las_data.points_by_file;
-SELECT COUNT(*) FROM las_data.ingestion_stats;
+SELECT COUNT(*) FROM silver_vm_metrics;
+SELECT COUNT(*) FROM gold_vm_recommendations;
 
-SELECT * FROM las_data.ingestion_stats LIMIT 5;
-SELECT * FROM las_data.points_by_file LIMIT 5;
+SELECT * FROM silver_vm_metrics LIMIT 140;
+SELECT * FROM gold_vm_recommendations LIMIT 280;
 
 ```
 
 ### Stopping Cassandra
 ```bash
-docker-compose -f apache-compose.yml down
+docker-compose -f coredbms-cassandra-compose.yml down
 ```
 
