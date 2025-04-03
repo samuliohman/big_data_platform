@@ -1,3 +1,16 @@
+samuli@LAPTOP-C00GC8SG:~/School/big_data/big_data_platform/assignment-3-907815$ git log
+commit e9561451f74cfe915f746b9c4e0d8362589e5c7a (HEAD -> main, origin/main, origin/HEAD)
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Apr 3 14:09:08 2025 +0300
+
+    Added descriptions for screenshots
+
+commit 017b04773c0ee9a2839cb139f66c5455d5a9471f
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Apr 3 14:05:27 2025 +0300
+
+    Assingment 3 final commit.
+    
 commit 9be677ac5514bc5a45b8a9f40c15498973139c8e (HEAD -> main, origin/main, origin/HEAD)
 Author: Samuli Öhman <samuli.ohman00@gmail.com>
 Date:   Thu Apr 3 12:38:58 2025 +0300
