@@ -480,6 +480,7 @@ The batch job determines its input by reading the silver data from the Kafka top
 - **Aggregation and Analysis:** Per-VM statistics are aggregated (e.g., counting total windows and anomaly windows) to compute anomaly frequency. Based on a threshold, recommendations (e.g., "Upgrade to higher CPU capacity") are generated.  
 - **Output Generation:** The final gold data, which includes aggregated metrics, processing timestamp, and the date range, is written both to a Kafka topic (gold-vm-metrics) and to Cassandra in a separate table.
 
+**Screenshot of tenantbatchapp in action**
 ![alt text](Screenshots/tenantbatchapp.png)
 
 (iii) Scheduling Implementation:  
@@ -502,6 +503,7 @@ Tenantbatchapp is executed as a Spark batch application via spark-submit on the 
 - **Kafka Producer as a Data Emulator:**  
   The test environment uses the provided `kafka_producer.py` script to simulate a streaming data source. This script reads from CSV files (e.g., tenant-specific VM CPU readings) and sends records in batches to Kafka’s `raw-vm-metrics` topic. 
 
+**Screenshot of kafka_producer in action**
 ![Kafka producer](Screenshots/kafka_producer_filtered.png)
 
 - **Controlled Data Injection:**  
@@ -518,6 +520,7 @@ Tenantbatchapp is executed as a Spark batch application via spark-submit on the 
   - Keyspaces and tables (e.g., `silver_vm_metrics`) are used to store processed data.
   - An external shared network (`bigdata-shared-network`) ensures reliable communication between Kafka, Spark, and Cassandra containers.
 
+**Screenshot of silver and gold data in coredbms (cassandra)**
 ![alt text](Screenshots/coredbms_silver_and_gold.png)
 
 ### Running and Observing `tenantstreamapp` Operation
@@ -533,6 +536,7 @@ Tenantbatchapp is executed as a Spark batch application via spark-submit on the 
   - Writes processed (silver) data to both Kafka (`silver-vm-metrics` topic) and Cassandra.
   - Prints progress output to the console (displaying windowed events and record insertion counts).
 
+**Screenshot of tenantstreamapp in action**
 ![alt text](Screenshots/tenantstreamapp.png)
 
 ### Observations with Varying Streaming Speeds
@@ -598,10 +602,6 @@ Parallelization is support by the platform by creating more containers, for exam
 *(Weighted factor for grades = 2)*  
 
 ## 3.1 Integration with an External RESTful Service
-  - Assume that you have an external RESTful (micro) service, which accepts a batch of data (processed records), performs an ML inference, and returns the result.  
-  - How would you integrate such a service into your current platform and suggest the tenant to use it in the streaming analytics?  
-  - Explain what the tenant must do in order to use such a service.  
-  - *(1 point)*
 
 To integrate an external RESTful microservice (which accepts a batch of processed records, performs ML inference, and returns results) into our platform, we incorporate a REST call into the streaming pipeline using Spark Structured Streaming's `foreachBatch` functionality. This allows each micro-batch of silver data to be forwarded to the ML service.
 
@@ -652,10 +652,6 @@ stream_query = (df.writeStream
 ---
 
 ## 3.2 Trigger for Batch Analytics on Bounded Data
-  - Assume that the raw data sent to the messaging system is bounded.  
-  - When the raw data is completely processed by tenantstreamapp, the tenantbatchapp will be triggered to do the analytics of silver data resulted from the processing of the raw data.  
-  - Present a design for an implementation of the trigger.  
-  - *(1 point)*
    
 **Design Overview:**
 
@@ -686,10 +682,6 @@ By using a dedicated completion signal (via a Kafka EOS message or a status flag
 ---
 
 ## 3.3 Workflow Coordination for Critical Conditions
-  - Assume that the streaming analytics detects a critical condition (e.g., a very high rate of alerts) that should trigger the execution of another batch analytics to analyze historical silver data.  
-  - The result of this batch analytics will be shared in a cloud storage and a user within the tenant will receive the information about the result.  
-  - Explain how you would use workflow technologies to coordinate these interactions and tasks (use a figure to explain your design).  
-  - *(1 point)*
 
 ### Proposed Workflow Coordination:
 
@@ -759,10 +751,6 @@ The batch job's result is written into cloud storage (such as AWS S3 or Google C
 ---
 
 ## 3.4 Handling Schema Evolution
-  - Given your choice of technology for implementing your streaming analytics, assume that a new schema of the input data has been developed and new input data follows the new schema (schema evolution).  
-  - How would you make sure that the running tenantstreamapp does not handle a wrong schema?  
-  - Assume the developer/owner of the tenantstreamapp should be aware of any new schema of the input data before deploying the tenantstreamapp; what could be a possible way that the developer/owner can detect the change of the schemas for the input data?  
-  - *(1 point)* 
 
 ### Ensuring Correct Schema Handling in Running tenantstreamapp:
 
@@ -803,12 +791,6 @@ By explicitly enforcing an expected schema during ingestion, validating messages
 ---
 
 ## 3.5 End-to-End Exactly-Once Delivery
-
-  - Is it possible to achieve end-to-end exactly once delivery in your current tenantstreamapp design and implementation?  
-  - If yes, explain why.  
-  - If not, what could be conditions and changes to achieve end-to-end exactly once?  
-  - If it is impossible to have end-to-end exactly once delivery in your view, explain the reasons.  
-  - *(1 point)*
 
 **Current Situation:**  
 Our tenantstreamapp is built on Spark Structured Streaming, which—when combined with proper checkpointing—can guarantee exactly-once processing from Kafka sources and into Kafka sinks. However, our design writes processed (silver) data into Cassandra using a custom connector without built-in transactional support. This creates a gap because without idempotent and transactional writes to Cassandra, the end-to-end delivery is not truly exactly once.
