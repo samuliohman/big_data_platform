@@ -26,13 +26,8 @@ The producer provides regular status updates as it processes files:
 - Any errors encountered during processing
 
 TODO:
-- Implement tenantbatchapp -> golden data
 - Update documentation
-- idea for parallelization:
-    cpu_df = cpu_df.filter(expr("hash(vm_id) % 10 = 0"))  # Process 10% of VMs
 - fix data retention limits to function properly with memory limits
-- fix the timestamps to work properly (instead of just integer timestamps), think about watermarks.
-- Silver data to cassandra also
 - Demonstrate graph for example a single device IDs cpu_util
 - performance metrics?
 
@@ -47,17 +42,15 @@ docker cp tenantstreamapp.py kafkaspark-spark-master-1:/opt/bitnami/spark/
 docker cp tenantbatchapp.py kafkaspark-spark-master-1:/opt/bitnami/spark/
 docker cp cassandra_utils.py kafkaspark-spark-master-1:/opt/bitnami/spark/
 docker cp configuration.json kafkaspark-spark-master-1:/opt/bitnami/spark/
-
-# Execute spark-submit inside the container
 docker exec -it kafkaspark-spark-master-1 pip install cassandra-driver
 
+# Execute spark-submit inside the container
 docker exec -it kafkaspark-spark-master-1 spark-submit \
     --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
     /opt/bitnami/spark/tenantstreamapp.py
 
 
 # Execute batch app inside the container (process all data)
-docker exec -it kafkaspark-spark-master-1 pip install cassandra-driver
 docker exec -it kafkaspark-spark-master-1 spark-submit \
     --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
     /opt/bitnami/spark/tenantbatchapp.py --manual
