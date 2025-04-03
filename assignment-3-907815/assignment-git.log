@@ -1,0 +1,127 @@
+commit 9be677ac5514bc5a45b8a9f40c15498973139c8e (HEAD -> main, origin/main, origin/HEAD)
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Apr 3 12:38:58 2025 +0300
+
+    Filled and updated report.
+
+commit 8eaf5381e107f1a6e12ec40d8698a12922bba760
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Apr 2 22:49:55 2025 +0300
+
+    Improved pipelines, added silver and golden data to be insgested into the coredbms.
+
+commit 95126b6681397ddbe94c8e11ddead6b0fb489963
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Tue Apr 1 22:38:13 2025 +0300
+
+:...skipping...
+commit 9be677ac5514bc5a45b8a9f40c15498973139c8e (HEAD -> main, origin/main, origin/HEAD)
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Apr 3 12:38:58 2025 +0300
+
+    Filled and updated report.
+
+commit 8eaf5381e107f1a6e12ec40d8698a12922bba760
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Apr 2 22:49:55 2025 +0300
+
+    Improved pipelines, added silver and golden data to be insgested into the coredbms.
+
+commit 95126b6681397ddbe94c8e11ddead6b0fb489963
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Tue Apr 1 22:38:13 2025 +0300
+
+    Kafka producer and tenantstreamapp now work properly creating raw-data and silver-data
+:...skipping...
+commit 9be677ac5514bc5a45b8a9f40c15498973139c8e (HEAD -> main, origin/main, origin/HEAD)
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Apr 3 12:38:58 2025 +0300
+
+    Filled and updated report.
+
+commit 8eaf5381e107f1a6e12ec40d8698a12922bba760
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Apr 2 22:49:55 2025 +0300
+
+    Improved pipelines, added silver and golden data to be insgested into the coredbms.
+
+commit 95126b6681397ddbe94c8e11ddead6b0fb489963
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Tue Apr 1 22:38:13 2025 +0300
+
+    Kafka producer and tenantstreamapp now work properly creating raw-data and silver-data
+
+commit 37561c74d03a25a8e44d2dc05bdc246bd037d765
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Mar 26 15:48:54 2025 +0200
+
+    Fixed line breaks in documentation to make different questions more clear.
+:...skipping...
+commit 9be677ac5514bc5a45b8a9f40c15498973139c8e (HEAD -> main, origin/main, origin/HEAD)
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Apr 3 12:38:58 2025 +0300
+
+    Filled and updated report.
+
+commit 8eaf5381e107f1a6e12ec40d8698a12922bba760
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Apr 2 22:49:55 2025 +0300
+
+    Improved pipelines, added silver and golden data to be insgested into the coredbms.
+
+commit 95126b6681397ddbe94c8e11ddead6b0fb489963
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Tue Apr 1 22:38:13 2025 +0300
+
+    Kafka producer and tenantstreamapp now work properly creating raw-data and silver-data
+
+commit 37561c74d03a25a8e44d2dc05bdc246bd037d765
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Mar 26 15:48:54 2025 +0200
+
+    Fixed line breaks in documentation to make different questions more clear.
+
+commit d5cd1eb1c501cd803eb7d1ccf6347163a24d4cd2
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+:...skipping...
+commit 9be677ac5514bc5a45b8a9f40c15498973139c8e (HEAD -> main, origin/main, origin/HEAD)
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Thu Apr 3 12:38:58 2025 +0300
+
+    Filled and updated report.
+
+commit 8eaf5381e107f1a6e12ec40d8698a12922bba760
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Apr 2 22:49:55 2025 +0300
+
+    Improved pipelines, added silver and golden data to be insgested into the coredbms.
+
+commit 95126b6681397ddbe94c8e11ddead6b0fb489963
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Tue Apr 1 22:38:13 2025 +0300
+
+    Kafka producer and tenantstreamapp now work properly creating raw-data and silver-data
+
+commit 37561c74d03a25a8e44d2dc05bdc246bd037d765
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Mar 26 15:48:54 2025 +0200
+
+    Fixed line breaks in documentation to make different questions more clear.
+
+commit d5cd1eb1c501cd803eb7d1ccf6347163a24d4cd2
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Mar 26 15:46:24 2025 +0200
+
+    Added initial design documentation and moved files to external directory.
+
+commit 76c66984ab03671d6386c4bd827fee8d4b1c7bcc
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Mar 26 13:40:45 2025 +0200
+
+    Added missing logs from assignment2 and updated subheading sizes in assignment3
+
+commit fe6222911ef626a7538c34b4d774f7726feb1bcd
+Author: Samuli Öhman <samuli.ohman00@gmail.com>
+Date:   Wed Mar 26 13:34:47 2025 +0200
+
+    Initial commit of assignment 3.

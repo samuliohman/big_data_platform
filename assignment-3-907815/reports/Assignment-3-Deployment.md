@@ -1,128 +1,100 @@
-# Assignment 2 - Deployment Instructions
+# Deployment Instructions
+
+Follow these steps to deploy the Streaming Analytics Platform:
 
 ## Prerequisites
+- Docker and Docker Compose installed.
+- Ensure necessary ports are open:
+  - Kafka: 9092 (internal), 9093 (external)
+  - Cassandra: 9042
+  - Spark Master UI: 8080
+- Git installed for version control.
 
-- Docker and Docker Compose
-- Python 3.8+ with pip
-- Git (for cloning the repository)
-
-## Step 1: Install Python Dependencies
-
-```bash
-cd /home/samuli/School/big_data/big_data_platform/assignment-2-907815
-pip install -r requirements.txt
-```
-
-If requirements.txt is not available, install the following packages:
-
-```bash
-pip install laspy numpy kafka-python watchdog schedule cassandra-driver
-```
-
-## Step 2: Start Kafka Services
-
-```bash
-cd ./code
-docker-compose up -d
-```
-
-Verify Kafka is running:
-```bash
-docker ps
-# You should see zookeeper and kafka containers running
-```
-
-## Step 3: Start Cassandra Cluster
-
-```bash
-cd ../External
-docker-compose -f apache-compose.yml up -d
-```
-
-Verify Cassandra is running:
-```bash
-docker ps
-# You should see three cassandra containers running
-```
-
-Wait about 30-60 seconds for Cassandra to initialize fully.
-
-## Step 4: Add LiDAR Data Files
-
-Copy your LAS files to the tenant directories:
-
-```bash
-# Example - copy LAS files to tenant directories
-cp /path/to/your/lidar-file1.las ./data/tenantA/
-cp /path/to/your/lidar-file2.las ./data/tenantB/
-```
-
-> **Note**: LAS files are not included in this repository and must be provided separately.
-
-## Step 5: Start the Batch Ingestion Manager
-
-```bash
-cd code
-python batch_ingest_manager.py
-```
-
-This will start monitoring the tenant directories for new LAS files.
-
-## Step 6: Start the Stream Processing Consumer
-
-Open a new terminal window and run:
-
-```bash
-cd /home/samuli/School/big_data/big_data_platform/assignment-2-907815/code
-python las_consumer.py
-```
-
-## Step 7: Testing the System
-
-To test the system:
-
-1. Place a new LAS file in one of the tenant directories:
+## Step 1: Start Cassandra
+1. Navigate to the External directory:
    ```bash
-   cp /path/to/your/new-file.las ./data/tenantA/
+   cd ./External
+   ```
+2. Start Cassandra using Docker Compose:
+   ```bash
+   docker-compose -f coredbms-cassandra-compose.yml up -d
+   ```
+3. Verify that Cassandra is running:
+   ```bash
+   docker ps | grep cassandra
    ```
 
-2. The batch_ingest_manager will automatically detect the file and start processing it.
-
-3. Check the logs directory for processing information:
+## Step 2: Start Kafka and Spark
+1. Navigate to the Kafka&Spark directory:
    ```bash
-   cat ../logs/tenantA_ingestion_log.json
-   cat ../logs/tenantA_consumer_log.json
+   cd ./code/Kafka&Spark
+   ```
+2. Start Kafka and Spark services:
+   ```bash
+   docker-compose up -d
+   ```
+3. Verify that Kafka and Spark containers are running:
+   ```bash
+   docker ps | grep kafka
+   docker ps | grep spark
    ```
 
-## Step 8: Verify Data in Cassandra
+## Step 3: Data Ingestion
+1. Ensure sample data is available in the tenant data directories (e.g., `/data/tenantA`) [download link: `https://github.com/Azure/AzurePublicDataset/blob/master/AzurePublicDatasetLinksV2.txt`].
+2. Run the Kafka producer to stream data into Kafka:
+   ```bash
+   cd ./code
+   python3 kafka_producer.py
+   ```
 
-```bash
-docker exec -it external-cassandra1-1 cqlsh
+## Step 4: Run Streaming Analytics (tenantstreamapp)
+1. Execute the streaming application using spark-submit from the Spark master container:
+   ```bash
+   cd ./code
 
-# In the cqlsh prompt:
-USE las_data;
-SELECT COUNT(*) FROM points_by_file;
-SELECT COUNT(*) FROM ingestion_stats;
-SELECT * FROM ingestion_stats LIMIT 5;
-```
+   # Copy from your host to the container
+   docker cp tenantstreamapp.py kafkaspark-spark-master-1:/opt/bitnami/spark/
+   docker cp tenantbatchapp.py kafkaspark-spark-master-1:/opt/bitnami/spark/
+   docker cp cassandra_utils.py kafkaspark-spark-master-1:/opt/bitnami/spark/
+   docker cp configuration.json kafkaspark-spark-master-1:/opt/bitnami/spark/
+   docker exec -it kafkaspark-spark-master-1 pip install cassandra-driver
 
-## Step 9: Shut Down the System
+   docker exec -it kafkaspark-spark-master-1 spark-submit \
+       --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
+       /opt/bitnami/spark/tenantstreamapp.py
+   ```
+2. Monitor the console output for windowed aggregations and anomaly detection.
+3. Verify silver data is output to both Kafka (topic "silver-vm-metrics") and Cassandra.
 
-When finished, stop all components:
+## Step 5: Run Batch Analytics (tenantbatchapp)
+1. To process batch analytics on silver data, run:
+   ```bash
+   # Execute batch app inside the container (process all data)
+   docker exec -it kafkaspark-spark-master-1 spark-submit \
+      --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
+      /opt/bitnami/spark/tenantbatchapp.py --manual
 
-```bash
-# Stop the Python processes using Ctrl+C in their respective terminals
+   # OR: Process only the last 24 hours
+   docker exec -it kafkaspark-spark-master-1 spark-submit \
+      --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 \
+      /opt/bitnami/spark/tenantbatchapp.py --hours 24
+   ```
+2. Batch analytics results are written to the Kafka topic "gold-vm-metrics" and to Cassandra.
 
-# Stop the Docker containers
-cd /home/samuli/School/big_data/big_data_platform/assignment-2-907815/code
-docker-compose down
-
-cd ../External
-docker-compose -f apache-compose.yml down
-```
+## Step 6: Querying Results
+- Use the Cassandra client to query processed data:
+  ```bash
+  python3 cassandra_client.py --mode gold
+  ```
+- For silver data of a specific VM:
+  ```bash
+  python3 cassandra_client.py --mode silver --vm "your-vm-id-here" --hours 48
+  ```
 
 ## Troubleshooting
-
-- If Kafka connections fail, ensure the Kafka container is running and the port 9092 is accessible.
-- If Cassandra connections fail, wait a bit longer for initialization or check port 9042 is accessible.
-- For processing errors, check the log files in the `logs` directory.
+- Check container logs:
+  ```bash
+  docker logs <container_id>
+  ```
+- Verify network connectivity among containers (using the shared Docker network `bigdata-shared-network`).
+- Review the Spark Master UI at http://localhost:8080 and Kafka logs for further insights.

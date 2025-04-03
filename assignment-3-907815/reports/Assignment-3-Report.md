@@ -2,17 +2,6 @@
 *(Weighted factor for grades = 3)*
 
 ## 1.1 Dataset Selection and Analytics Design  
-- As a tenant, select a raw dataset suitable for streaming data analytics as a running scenario.  
-- Explain the dataset and why it is suitable for streaming data analytics in your scenario.  
-- Present at least two different analytics:  
-  - **Streaming Analytics (tenantstreamapp):** Analyzes raw data from the tenant to produce silver data.  
-  - **Batch Analytics (tenantbatchapp):** Using the workflow model, analyzes historical silver data outputted by the streaming analytics to produce gold data.  
-- Explain:  
-  - (i) The overall functionality of the streaming analytics.  
-  - (ii) The overall functionality of the batch analytics.  
-  - (iii) The data sink of the streaming analytics, as the data source for the batch analytics.  
-  - (iv) When and how the batch analytics determines silver data as input.  
-- *(1 point)*  
 
 ### Dataset Selection and Suitability for Streaming Analytics  
 
@@ -87,11 +76,6 @@ This setup makes full use of the dataset’s time-based structure and works well
 ---
 
 ## 1.2 Messaging System Considerations  
-- The tenant will send raw data through a messaging system, which provides stream data sources.  
-- Discuss, explain, and give examples for:  
-  - (i) Whether the streaming analytics should handle keyed or non-keyed data streams for the tenant data.  
-  - (ii) Which types of message delivery guarantees should be suitable for the stream analytics and why.  
-- *(1 point)*  
 
 ### (i) Keyed vs. Non-Keyed Streams  
 Keyed streams are required for this tenant’s use case.  
@@ -150,13 +134,6 @@ This design aligns with the tenant’s need for real-time anomaly detection and 
 ---
 
 ## 1.3 Time, Windowing, and Data Order  
-- Given streaming data from the tenant, explain and give examples for:  
-  - (i) Which types of time should be associated with stream data sources for the analytics and be considered in stream processing.  
-    - *(If the data sources have no timestamps associated with records, what would be your solution?)*  
-  - (ii) Which types of windows should be developed for the analytics (or explain why no window is needed).  
-  - (iii) What could cause out-of-order data/records with your selected data in your running example.  
-  - (iv) Whether watermarks are needed or not and explain why.  
-- *(1 point)*  
 
 #### (i) Types of Time  
 For this tenant’s streaming analytics, **event time** is the primary time.
@@ -233,12 +210,6 @@ This design ensures robust handling of real-world data quirks while maintaining 
 ---
 
 ## 1.4 Performance Metrics 
-- List important performance metrics for the streaming analytics for your tenant cases.  
-- For each metric, explain:  
-  - (i) Its definition.  
-  - (ii) How to measure it in your analytics/platform.  
-  - (iii) Its importance and relevance for the analytics of the tenant (for whom/components and for which purposes).  
-- *(1 point)*  
 
 - **1. Throughput**  
   - **Definition**: Records processed per second (e.g., VM CPU readings ingested/analyzed per second).  
@@ -317,17 +288,6 @@ This design ensures robust handling of real-world data quirks while maintaining 
 ---
 
 ## 1.5 Architecture Design  
-- Provide a design of your architecture for the streaming analytics service, clarifying:  
-  - Tenant data sources.  
-  - mysimbdp messaging system.  
-  - mysimbdp streaming computing service.  
-  - tenantstreamapp.  
-  - tenantbatchapp.  
-  - mysimbdp-coredms.  
-  - Other components, if needed.  
-- Explain your choices of technologies for implementing your design and the reusability of existing assignment works.  
-- **Note:** In the design, silver data resulted from tenantstreamapp will be sent back to the tenant in near real-time under certain conditions and always be ingested into mysimbdp-coredms.  
-- *(1 point)*  
 
 ### Components and Technologies
 
@@ -459,13 +419,6 @@ Tenant
 *(Weighted factor for grades = 3)*
 
 ## 2.1 Tenant Streaming Analytics (tenantstreamapp) Implementation  
-- As a tenant, implement a tenantstreamapp.  
-- For code design and implementation, explain:  
-  - (i) The structures/schemas of the input streaming data and the analytics output/result (silver data) in your implementation, the role/importance of such schemas, and the reason to enforce them for input data and results.  
-  - (ii) The data serialization/deserialization for the streaming analytics application (tenantstreamapp).  
-  - (iii) The logic of the functions for processing events/records in tenantstreamapp in your implementation.  
-  - (iv) Under which conditions/configurations and how the results are sent back to the tenant in a near real-time manner.  
-- *(1 point)*  
 
 (i) Structures/Schemas
 
@@ -518,15 +471,6 @@ Tenant
 ---
 
 ## 2.2 Tenant Batch Analytics (tenantbatchapp) Implementation
-- As a tenant, implement tenantbatchapp which is triggered by a predefined schedule.  
-- The resulting gold data is also stored into mysimbdp-coredms, but separated from silver data.  
-- Explain:  
-  - (i) How the input silver data is determined for a run of the batch analytics when no duplicated input data in the batch analytics shall be allowed.  
-  - (ii) The workflow structure and the logic of the main function performing the data analysis.  
-  - (iii) How the schedule is implemented.  
-  - (iv) The underlying service running the workflow.  
-- *(1 point)*  
-
 (i) Selecting Input Silver Data Without Duplicates:  
 The batch job determines its input by reading the silver data from the Kafka topic "silver-vm-metrics". Deduplication is ensured because each silver record is uniquely identified (e.g., using a composite key such as vm_id and window_start) during streaming. Thus, each batch run processes only the new data received since the last execution.
 
@@ -535,6 +479,8 @@ The batch job determines its input by reading the silver data from the Kafka top
 - **Parsing and Filtering:** The job parses the JSON messages, converts string timestamps to proper timestamp types, and filters the records based on a specified time interval (e.g., the last 24 hours) provided via command-line parameters.  
 - **Aggregation and Analysis:** Per-VM statistics are aggregated (e.g., counting total windows and anomaly windows) to compute anomaly frequency. Based on a threshold, recommendations (e.g., "Upgrade to higher CPU capacity") are generated.  
 - **Output Generation:** The final gold data, which includes aggregated metrics, processing timestamp, and the date range, is written both to a Kafka topic (gold-vm-metrics) and to Cassandra in a separate table.
+
+![alt text](Screenshots/tenantbatchapp.png)
 
 (iii) Scheduling Implementation:  
 The batch application is triggered by an external scheduler such as a UNIX cron job or Apache Airflow. For manual execution or testing, it can be run using spark-submit with command-line arguments. For example:
@@ -550,17 +496,13 @@ Tenantbatchapp is executed as a Spark batch application via spark-submit on the 
 ---
 
 ## 2.3 Test Environment for Streaming Analytics
-- Explain a test environment for testing tenantstreamapp, including:  
-  - How you emulate streaming data.  
-  - The configuration of mysimbdp and other relevant parameters.  
-- Run tenantstreamapp and show the operation of tenantstreamapp with your test environments.  
-- Discuss the analytics and its performance observations when you increase/vary the speed of streaming data.  
-- *(1 point)*  
 
 ### Emulating Streaming Data
 
 - **Kafka Producer as a Data Emulator:**  
   The test environment uses the provided `kafka_producer.py` script to simulate a streaming data source. This script reads from CSV files (e.g., tenant-specific VM CPU readings) and sends records in batches to Kafka’s `raw-vm-metrics` topic. 
+
+![Kafka producer](Screenshots/kafka_producer_filtered.png)
 
 - **Controlled Data Injection:**  
   The CSV files serve as preloaded sample data. Although the script could be modified to vary the ingestion speed (e.g., using sleep intervals or adjusting batch sizes), in the current setup, the data is streamed at a constant rate without explicit speed variations.
@@ -576,6 +518,8 @@ Tenantbatchapp is executed as a Spark batch application via spark-submit on the 
   - Keyspaces and tables (e.g., `silver_vm_metrics`) are used to store processed data.
   - An external shared network (`bigdata-shared-network`) ensures reliable communication between Kafka, Spark, and Cassandra containers.
 
+![alt text](Screenshots/coredbms_silver_and_gold.png)
+
 ### Running and Observing `tenantstreamapp` Operation
 
 - **Starting the Environment:**  
@@ -588,6 +532,8 @@ Tenantbatchapp is executed as a Spark batch application via spark-submit on the 
   - Processes incoming records by applying windowing and anomaly detection (timestamps are shifted to start from 2019 due to historic data simulation).
   - Writes processed (silver) data to both Kafka (`silver-vm-metrics` topic) and Cassandra.
   - Prints progress output to the console (displaying windowed events and record insertion counts).
+
+![alt text](Screenshots/tenantstreamapp.png)
 
 ### Observations with Varying Streaming Speeds
 
@@ -616,11 +562,6 @@ This test environment establishes a complete pipeline where simulated streaming 
 ---
 
 ## 2.4 Error Handling Tests  
-- Present your tests and explain them for the situation in which wrong data is sent from or is within the data sources.  
-- Explain how you emulate wrong data for your tests.  
-- Report how your implementation deals with that (e.g., exceptions, failures, and decreasing performance).  
-- You should test with different error rates.  
-- *(1 point)*  
 
 ### Test Setup & Emulation of Incorrect Data
 
@@ -648,10 +589,8 @@ This test setup ensures that the streaming analytics application gracefully hand
 
 
 ## 2.5 Parallelism Testing  
-- Explain parallelism settings in your implementation (tenantstreamapp) and test with different (higher) degrees of parallelism for at least two instances of tenantstreamapp (e.g., using different subsets of the same dataset).  
-- Report the performance and issues you have observed in your testing environments.  
-- Is there any situation in which a high value of the application parallelism degree could cause performance problems, given your limited underlying computing resources?  
-- *(1 point)*  
+
+Parallelization is support by the platform by creating more containers, for example a setup of 4 kafka containers and 6 spark containers. This haven't been tested though due to limited amount of time and limited resources. Currently the system runs on a laptop which is really bottlenecked by memory even when creating the minimal setup of the following containers: Kafka, Zookeeper, Spark master, Spark worker and Cassandra.
 
 ---
 
@@ -897,3 +836,4 @@ In our current design, exactly-once delivery is not fully achievable end-to-end 
 
 This would require changes to the Cassandra integration layer and potentially adopting additional middleware to support distributed transactions. Until then, our design effectively provides at-least-once semantics with Spark's built-in recovery mechanisms.
 
+Note: Copilot has been used as assistance in this assigment for example to speed up debugging.

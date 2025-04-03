@@ -26,8 +26,8 @@ DESCRIBE TABLES;
 SELECT COUNT(*) FROM silver_vm_metrics;
 SELECT COUNT(*) FROM gold_vm_recommendations;
 
-SELECT * FROM silver_vm_metrics LIMIT 140;
-SELECT * FROM gold_vm_recommendations;
+SELECT * FROM silver_vm_metrics LIMIT 100;
+SELECT * FROM gold_vm_recommendations LIMIT 100;
 
 ```
 
